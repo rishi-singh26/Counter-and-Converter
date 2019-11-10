@@ -62,11 +62,7 @@ export default class Counter extends React.Component {
          inputValue: "",
          data: [],
          fullData: [],
-         savedData: [
-            [1, 7, 2, 6, 3, 5, 4],
-            [2, 4, 2, 5, 6, 3, 2],
-            [3, 5, 2, 8, 9, 5, 1]
-         ],
+         savedData: [],
          weekStartDate: [],
          weekEndDate: []
       };
@@ -182,7 +178,7 @@ export default class Counter extends React.Component {
                }}
             >
                <YAxis
-                  data={this.state.savedData[0]}
+                  data={this.state.fullData}
                   contentInset={contentInset}
                   svg={{
                      fill: "grey",
@@ -194,7 +190,7 @@ export default class Counter extends React.Component {
                />
                <LineChart
                   style={{ flex: 1, marginLeft: 16 }}
-                  data={this.state.savedData[0]}
+                  data={this.state.fullData}
                   svg={{ stroke: "rgb(244, 74, 65)" }}
                   contentInset={contentInset}
                >
@@ -346,9 +342,9 @@ export default class Counter extends React.Component {
                {
                   text: "Yes",
                   onPress: () => {
-                     var newFUllData = this.state.fullData.concat([
+                     var newFUllData = this.state.fullData.concat(
                         this.state.data
-                     ]);
+                     );
                      this.setState({ fullData: newFUllData });
                      // this.setState({
                      //    fullData: this.state.fulldata.concat([this.state.data])

@@ -103,14 +103,13 @@ export default class Converter extends React.Component {
          <Text></Text>
          <Text style={styles.date}>{date}</Text>
          <Text></Text>
+         <Text style={styles.text}>
+            Decimal to Binary To Hexadecimal Converter
+         </Text>
          <View
             style={{
                padding: 10,
-               margin: 10,
-               borderRadius: 5,
-               borderColor: "rgb(68,137,215)",
-               borderStyle: "solid",
-               borderWidth: 1
+               margin: 10
             }}
          >
             <OutlinedTextField
@@ -163,15 +162,11 @@ export default class Converter extends React.Component {
          </View>
          <Text></Text>
          <Text></Text>
-         <Text></Text>
+         <Text style={styles.text}>Text to Binary Converter</Text>
          <View
             style={{
                padding: 10,
-               margin: 10,
-               borderRadius: 5,
-               borderColor: "rgb(68,137,215)",
-               borderStyle: "solid",
-               borderWidth: 1
+               margin: 10
             }}
          >
             <OutlinedTextField
