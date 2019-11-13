@@ -26,13 +26,25 @@ const images = {
    background: require("./images/orange.jpg") // Put your own image here
 };
 
+const weekDays = [
+   "Monday",
+   "Tuesday",
+   "Wednesday",
+   "Thrusday",
+   "Friday",
+   "Saturday",
+   "Sunday"
+];
+
 var today = new Date();
 var date =
    today.getDate() +
    "/" +
    parseInt(today.getMonth() + 1) +
    "/" +
-   today.getFullYear();
+   today.getFullYear() +
+   ", " +
+   weekDays[today.getDay() - 1];
 
 export default class Converter extends React.Component {
    constructor(props) {
@@ -114,7 +126,7 @@ export default class Converter extends React.Component {
          >
             <OutlinedTextField
                label="Decimal"
-               keyboardType="phone-pad"
+               keyboardType="default"
                formatText={this.formatText}
                onSubmitEditing={this.onSubmit1}
                ref={this.fieldRef1}
@@ -130,7 +142,7 @@ export default class Converter extends React.Component {
             <Text></Text>
             <OutlinedTextField
                label="Binary"
-               keyboardType="phone-pad"
+               keyboardType="default"
                formatText={this.formatText}
                onSubmitEditing={this.onSubmit2}
                ref={this.fieldRef2}
@@ -187,7 +199,7 @@ export default class Converter extends React.Component {
             <Text></Text>
             <OutlinedTextField
                label="Binary"
-               keyboardType="phone-pad"
+               keyboardType="default"
                formatText={this.formatText}
                onSubmitEditing={this.onSubmit5}
                ref={this.fieldRef5}
