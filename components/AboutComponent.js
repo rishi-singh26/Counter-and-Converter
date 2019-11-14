@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -6,56 +6,48 @@ import {
   Dimensions,
   Platform,
   TouchableOpacity,
-  Clipboard
+  Alert,
+  Linking
 } from "react-native";
-import { SocialIcon, Button, Input } from "react-native-elements";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import email from "react-native-email";
+import {
+  SocialIcon,
+  Button,
+  Icon,
+  Card,
+  ListItem
+} from "react-native-elements";
+// import Icon from "react-native-vector-icons/MaterialIcons";
 import ReactNativeParallaxHeader from "react-native-parallax-header";
+import { LineChart, YAxis, XAxis, Grid } from "react-native-svg-charts";
 import {
   TextField,
   FilledTextField,
   OutlinedTextField
 } from "react-native-material-textfield";
+// import AsyncStorage from "@react-native-community/async-storage";
 
 const SCREEN_HEIGHT = Math.round(Dimensions.get("window").height);
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 44 : 20) : 20;
 const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
+
 const images = {
   background: require("./images/orange.jpg") // Put your own image here
 };
 
-const weekDays = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thrusday",
-  "Friday",
-  "Saturday",
-  "Sunday"
-];
+// class starts here
 
-var today = new Date();
-var date =
-  today.getDate() +
-  "/" +
-  parseInt(today.getMonth() + 1) +
-  "/" +
-  today.getFullYear() +
-  ", " +
-  weekDays[today.getDay() - 1];
-
-export default class Trial extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+export default class About extends React.Component {
   static navigationOptions = {
     header: null
   };
 
-  state = {};
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   render() {
     return (
@@ -66,7 +58,7 @@ export default class Trial extends React.Component {
           extraScrollHeight={20}
           navbarColor="#FF7544"
           statusBarColor="#fff"
-          title="Converter"
+          title="Coffie Counter"
           titleStyle={styles.titleStyle}
           backgroundImage={images.background}
           backgroundImageScale={1.1}
@@ -102,27 +94,85 @@ export default class Trial extends React.Component {
     <View>
       <Text></Text>
       <Text></Text>
-      <Text style={styles.date}>{date}</Text>
-      <Text></Text>
-      <Text></Text>
-      <Text style={styles.text}>
-        Pellentesque habitant morbi tristique senectus et netus et malesuada
-        fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae,
-        ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
-        egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend
-        leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum
-        erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean
-        fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci,
-        sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar
-        facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor
-        neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat
-        volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis
-        luctus, metus
-      </Text>
-      <Text></Text>
-      <Text></Text>
+      <View style={styles.container}>
+        <Text></Text>
+        <Text></Text>
+        <Text style={styles.text}>
+          Contact Me to share you experiance or to send some feedback or just to
+          say hi.
+        </Text>
+        <Text></Text>
+        <View>
+          <View style={styles.fixToScreen}>
+            <SocialIcon
+              onPress={() =>
+                Linking.openURL("https://join.skype.com/invite/bSsjEVuBEpcN")
+              }
+              light
+              type="skype"
+            />
+          </View>
+        </View>
+        <View>
+          <View style={styles.fixToScreen}>
+            <SocialIcon onPress={this.handleEmail} type="envelope" />
+            <SocialIcon onPress={this.handleWhatsapp} light type="whatsapp" />
+          </View>
+        </View>
+        <View>
+          <View style={styles.fixToScreen}>
+            <SocialIcon
+              onPress={() =>
+                Linking.openURL("https://github.com/rishi-singh26")
+              }
+              // light
+              type="github"
+            />
+
+            <SocialIcon
+              onPress={() =>
+                Linking.openURL(
+                  "https://www.linkedin.com/in/rishi-singh-b2226415b/"
+                )
+              }
+              // light
+              type="linkedin"
+            />
+
+            <SocialIcon
+              onPress={() =>
+                Linking.openURL("https://codepen.io/rishisingh-26/")
+              }
+              // light
+              type="codepen"
+            />
+          </View>
+        </View>
+
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+      </View>
     </View>
   );
+
+  handleEmail = () => {
+    const to = ["rishisingh0831@gmail.com"]; // string or array of email addresses
+    email(to, {
+      // Optional additional arguments
+      // cc: ['bazzy@moo.com', 'doooo@daaa.com'], // string or array of email addresses
+      // bcc: 'mee@mee.com', // string or array of email addresses
+      subject: "Share your views."
+      // body: 'Some body right here'
+    }).catch(console.error);
+  };
+
+  handleWhatsapp = () => {
+    Linking.openURL("whatsapp://send?text=hello&phone=+919513087147");
+  };
 }
 
 const styles = StyleSheet.create({
@@ -148,6 +198,21 @@ const styles = StyleSheet.create({
     letterSpacing: 1
     // textAlign: 'center',
   },
+  textInput: {
+    fontFamily: "Roboto",
+    fontSize: 17,
+    color: "#000",
+    marginLeft: 30,
+    marginRight: 30,
+    lineHeight: 30,
+    letterSpacing: 1,
+    borderColor: "blue",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 20
+    // textAlign: 'center',
+  },
   date: {
     fontFamily: "Roboto",
     fontSize: 22,
@@ -156,7 +221,6 @@ const styles = StyleSheet.create({
     marginRight: 30,
     lineHeight: 30,
     letterSpacing: 1
-    // textAlign: 'center',
   },
   contentContainer: {
     flexGrow: 1
@@ -187,5 +251,10 @@ const styles = StyleSheet.create({
   button: {
     marginLeft: 30,
     marginRight: 30
+  },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: "#737373",
+    borderBottomWidth: StyleSheet.hairlineWidth
   }
 });

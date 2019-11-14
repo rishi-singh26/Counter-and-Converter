@@ -10,16 +10,10 @@ import {
   Linking
 } from "react-native";
 import email from "react-native-email";
-import { SocialIcon, Button, Icon } from "react-native-elements";
-// import Icon from "react-native-vector-icons/MaterialIcons";
+import { Button, Icon, Card } from "react-native-elements";
 import ReactNativeParallaxHeader from "react-native-parallax-header";
 import { LineChart, YAxis, XAxis, Grid } from "react-native-svg-charts";
-import {
-  TextField,
-  FilledTextField,
-  OutlinedTextField
-} from "react-native-material-textfield";
-// import AsyncStorage from "@react-native-community/async-storage";
+import { OutlinedTextField } from "react-native-material-textfield";
 
 const SCREEN_HEIGHT = Math.round(Dimensions.get("window").height);
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
@@ -30,8 +24,6 @@ const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 const images = {
   background: require("./images/orange.jpg") // Put your own image here
 };
-
-const data = [50, 10, 40, 95, 4, 24, 85, 91, 35, 53, 53, 24, 50, 20, 80];
 
 const contentInset = { top: 20, bottom: 20 };
 
@@ -50,12 +42,6 @@ var count = 0;
 // the weekCount counts the number of weeks
 var weekCount = 0;
 
-const graph = "";
-
-function Separator() {
-  return <View style={styles.separator} />;
-}
-
 // class starts here
 
 export default class Counter extends React.Component {
@@ -68,50 +54,66 @@ export default class Counter extends React.Component {
     this.state = {
       inputValue: "",
       data: [],
-      fullData: [],
-      savedData: [],
-      weekStartDate: [],
-      weekEndDate: []
+      fullData: []
     };
   }
 
   render() {
     //  this renders the saved graphs
 
-    graphs = this.state.fullData.map(graph => {
-      return (
-        <View
-          key={graph.id}
-          style={{
-            height: 200,
-            flexDirection: "row",
-            marginLeft: 10,
-            marginRight: 10
-          }}
-        >
-          <Text>{graph.date}</Text>
-          <Separator />
-          <YAxis
-            data={graph.data}
-            contentInset={contentInset}
-            svg={{
-              fill: "grey",
-              fontSize: 15
-            }}
-            numberOfTicks={5}
-            formatLabel={value => `${value}`}
-          />
-          <LineChart
-            style={{ flex: 1, marginLeft: 16 }}
-            data={graph.data}
-            svg={{ stroke: "rgb(244, 74, 65)" }}
-            contentInset={contentInset}
+    graphs = this.state.fullData
+      .slice(0)
+      .reverse()
+      .map(graph => {
+        return (
+          <Card
+            title="CARD WITH DIVIDER"
+            key={graph.id}
+            style={styles.container}
           >
-            <Grid />
-          </LineChart>
-        </View>
-      );
-    });
+            <View style={styles.user}>
+              <View
+                style={{
+                  height: 200,
+                  flexDirection: "row"
+                  //  marginLeft: 10,
+                  //  marginRight: 10
+                }}
+              >
+                <YAxis
+                  data={graph.data}
+                  contentInset={contentInset}
+                  svg={{
+                    fill: "grey",
+                    fontSize: 15
+                  }}
+                  numberOfTicks={5}
+                  formatLabel={value => `${value}`}
+                />
+                <LineChart
+                  style={{ flex: 1, marginLeft: 16 }}
+                  data={graph.data}
+                  svg={{ stroke: "rgb(244, 74, 65)" }}
+                  contentInset={contentInset}
+                >
+                  <Grid />
+                </LineChart>
+              </View>
+              <Text></Text>
+              <Button
+                //   icon={<Icon name="info-circle" color="#ffffff" />}
+                buttonStyle={{
+                  borderRadius: 0,
+                  marginLeft: 0,
+                  marginRight: 0,
+                  marginBottom: 0
+                }}
+                title="VIEW NOW"
+              />
+            </View>
+          </Card>
+        );
+      });
 
     return (
       <View style={styles.container}>
@@ -172,11 +174,12 @@ export default class Counter extends React.Component {
           ref={this.fieldRef}
         />
       </View>
-      <View style={styles.container}>
+      <View>
         <Text></Text>
         <View>
           <View style={styles.fixToScreen}>
-            <SocialIcon onPress={this.addData} light type="plus" />
+            <Button title="Add This" type="clear" onPress={this.addData} />
+            {/* <SocialIcon onPress={this.addData} light type="plus" /> */}
           </View>
         </View>
         <Text></Text>
@@ -200,13 +203,6 @@ export default class Counter extends React.Component {
             formatLabel={value => `${value}`}
             // formatLabel={value => `${value}ºC`}
           />
-          {/* <XAxis
-                  style={{ marginHorizontal: -10 }}
-                  data={this.state.data}
-                  formatLabel={(value, index) => index}
-                  contentInset={{ left: 10, right: 10 }}
-                  svg={{ fontSize: 10, fill: "black" }}
-               /> */}
           <LineChart
             style={{ flex: 1, marginLeft: 16 }}
             data={this.state.data}
@@ -219,7 +215,7 @@ export default class Counter extends React.Component {
         <Text></Text>
         <Text></Text>
         <Text></Text>
-        {graphs}
+        <View>{graphs}</View>
         <Text></Text>
         <Text></Text>
         <Text></Text>
@@ -228,53 +224,6 @@ export default class Counter extends React.Component {
           say hi.
         </Text>
         <Text></Text>
-        <View>
-          <View style={styles.fixToScreen}>
-            <SocialIcon
-              onPress={() =>
-                Linking.openURL("https://join.skype.com/invite/bSsjEVuBEpcN")
-              }
-              light
-              type="skype"
-            />
-          </View>
-        </View>
-        <View>
-          <View style={styles.fixToScreen}>
-            <SocialIcon onPress={this.handleEmail} type="envelope" />
-            <SocialIcon onPress={this.handleWhatsapp} light type="whatsapp" />
-          </View>
-        </View>
-        <View>
-          <View style={styles.fixToScreen}>
-            <SocialIcon
-              onPress={() =>
-                Linking.openURL("https://github.com/rishi-singh26")
-              }
-              // light
-              type="github"
-            />
-
-            <SocialIcon
-              onPress={() =>
-                Linking.openURL(
-                  "https://www.linkedin.com/in/rishi-singh-b2226415b/"
-                )
-              }
-              // light
-              type="linkedin"
-            />
-
-            <SocialIcon
-              onPress={() =>
-                Linking.openURL("https://codepen.io/rishisingh-26/")
-              }
-              // light
-              type="codepen"
-            />
-          </View>
-        </View>
-
         <Text></Text>
         <Text></Text>
         <Text></Text>
@@ -400,14 +349,6 @@ export default class Counter extends React.Component {
     var val = field.value();
     this.setState({ inputValue: val });
   };
-
-  // storeData = async () => {
-  //    try {
-  //       await AsyncStorage.setItem("@storage_Key", "stored value");
-  //    } catch (e) {
-  //       // saving error
-  //    }
-  // };
 }
 
 const styles = StyleSheet.create({
@@ -419,7 +360,7 @@ const styles = StyleSheet.create({
   },
   fixToScreen: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     marginLeft: 50,
     marginRight: 50
   },
@@ -486,10 +427,5 @@ const styles = StyleSheet.create({
   button: {
     marginLeft: 30,
     marginRight: 30
-  },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: "#737373",
-    borderBottomWidth: StyleSheet.hairlineWidth
   }
 });

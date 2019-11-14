@@ -1,12 +1,10 @@
 import React from "react";
 import Counter from "./CounterComponent";
 import Converter from "./ConverterComponent";
-import Trial from "./trialComponent";
+import About from "./AboutComponent";
 import { createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import Icon from "react-native-vector-icons/FontAwesome";
-
-// History navigator component
 
 const MainNavigator = createBottomTabNavigator({
   Home: {
@@ -18,21 +16,21 @@ const MainNavigator = createBottomTabNavigator({
       )
     }
   },
-  History: {
+  Converter: {
     screen: Converter,
     navigationOptions: {
       tabBarLabel: "Converter",
       tabBarIcon: ({ tintColor }) => (
-        <Icon name="database" color={tintColor} size={25} />
+        <Icon name="retweet" color={tintColor} size={25} />
       )
     }
   },
-  Trial: {
-    screen: Trial,
+  About: {
+    screen: About,
     navigationOptions: {
-      tabBarLabel: "Trial",
+      tabBarLabel: "About",
       tabBarIcon: ({ tintColor }) => (
-        <Icon name="database" color={tintColor} size={25} />
+        <Icon name="info-circle" color={tintColor} size={25} />
       )
     }
   }
