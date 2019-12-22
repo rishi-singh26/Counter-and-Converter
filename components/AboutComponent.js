@@ -17,15 +17,7 @@ import {
   Card,
   ListItem
 } from "react-native-elements";
-// import Icon from "react-native-vector-icons/MaterialIcons";
 import ReactNativeParallaxHeader from "react-native-parallax-header";
-import { LineChart, YAxis, XAxis, Grid } from "react-native-svg-charts";
-import {
-  TextField,
-  FilledTextField,
-  OutlinedTextField
-} from "react-native-material-textfield";
-// import AsyncStorage from "@react-native-community/async-storage";
 
 const SCREEN_HEIGHT = Math.round(Dimensions.get("window").height);
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
@@ -58,7 +50,7 @@ export default class About extends React.Component {
           extraScrollHeight={20}
           navbarColor="#FF7544"
           statusBarColor="#fff"
-          title="Coffie Counter"
+          title="About"
           titleStyle={styles.titleStyle}
           backgroundImage={images.background}
           backgroundImageScale={1.1}

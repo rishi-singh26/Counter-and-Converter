@@ -9,6 +9,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const MainNavigator = createBottomTabNavigator({
   Home: {
     screen: Counter,
+    // Dishdetail: { screen: Dishdetail },
+    initialRouteName: "Counter",
     navigationOptions: {
       tabBarLabel: "Counter",
       tabBarIcon: ({ tintColor }) => (

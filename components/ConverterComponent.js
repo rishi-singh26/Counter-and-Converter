@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -8,14 +8,10 @@ import {
   TouchableOpacity,
   Clipboard
 } from "react-native";
-import { SocialIcon, Button, Input } from "react-native-elements";
+import { Button, Input } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import ReactNativeParallaxHeader from "react-native-parallax-header";
-import {
-  TextField,
-  FilledTextField,
-  OutlinedTextField
-} from "react-native-material-textfield";
+import { OutlinedTextField } from "react-native-material-textfield";
 
 const SCREEN_HEIGHT = Math.round(Dimensions.get("window").height);
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
@@ -23,7 +19,7 @@ const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 44 : 20) : 20;
 const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 const images = {
-  background: require("./images/orange.jpg") // Put your own image here
+  background: require("./images/convert.png") // Put your own image here
 };
 
 const weekDays = [
@@ -75,7 +71,7 @@ export default class Converter extends React.Component {
           headerMinHeight={HEADER_HEIGHT}
           headerMaxHeight={300}
           extraScrollHeight={20}
-          navbarColor="#FF7544"
+          navbarColor="#039BE6"
           statusBarColor="#fff"
           title="Converter"
           titleStyle={styles.titleStyle}
