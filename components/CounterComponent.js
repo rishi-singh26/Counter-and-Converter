@@ -22,10 +22,10 @@ const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 44 : 20) : 20;
 const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
-const screenWidth = Math.round(Dimensions.get("window").width);
+const screenWidth = Dimensions.get("window").width;
 
 const images = {
-  background: require("./images/coffie.png") // Put your own image here
+  background: require("./images/green.jpg") // Put your own image here
 };
 
 const contentInset = { top: 20, bottom: 20 };
@@ -66,6 +66,22 @@ function getData(obj) {
   return pushArray;
 }
 
+function getDay1(obj) {
+  var pushArray = [];
+  for (var i = 0; i < obj.length; i++) {
+    pushArray.push(obj[i].day);
+  }
+  return pushArray;
+}
+
+function getDate(obj) {
+  var pushArray = [];
+  for (var i = 0; i < obj.length; i++) {
+    pushArray.push(obj[i].date);
+  }
+  return pushArray;
+}
+
 // class starts here
 
 export default class Counter extends React.Component {
@@ -80,17 +96,35 @@ export default class Counter extends React.Component {
       fullData: [],
       dataArray: [],
       count: 0,
-      weekCount: 0
+      weekCount: 0,
+      fullDataKey: "",
+      currentWeekDataKey: "",
+      header: ""
     };
   }
 
+  // fullDataKey =
+  // currentWeekDataKey =
+
   componentDidMount() {
     this.retriveData();
+    this.setState({
+      fullDataKey: this.props.navigation.getParam("fullDataStorageKey", "")
+    });
+    this.setState({
+      fullDataKey: this.props.navigation.getParam(
+        "currentWeekDataStorageKey",
+        ""
+      )
+    });
+    this.setState({
+      header: this.props.navigation.getParam("header", "")
+    });
   }
 
   retriveData = async () => {
     try {
-      const value = await AsyncStorage.getItem("currentWeekData1");
+      const value = await AsyncStorage.getItem(this.state.currentWeekDataKey);
       if (value !== null) {
         // We have data!!
         var retrivedObj = JSON.parse(value);
@@ -108,7 +142,7 @@ export default class Counter extends React.Component {
 
     if (1 === 1) {
       try {
-        const value = await AsyncStorage.getItem("fullData1");
+        const value = await AsyncStorage.getItem(this.state.fullDataKey);
         if (value !== null) {
           // We have data!!
           var retrivedObj1 = JSON.parse(value);
@@ -138,13 +172,13 @@ export default class Counter extends React.Component {
         return (
           <Card
             title={
-              graph.startDay +
+              graph.dayArray[0] +
               "," +
-              graph.startDate +
+              graph.dateArray[0] +
               "-" +
-              graph.endDay +
+              graph.dayArray[graph.dayArray.length - 1] +
               "," +
-              graph.endDate
+              graph.dateArray[graph.dateArray.length - 1]
             }
             key={graph.id}
             style={styles.container}
@@ -178,13 +212,27 @@ export default class Counter extends React.Component {
                 </LineChart>
               </View>
               <Text></Text>
-              <Text style={styles.text}>Day 1 data: {graph.data[0]}</Text>
-              <Text style={styles.text}>Day 2 data: {graph.data[1]}</Text>
-              <Text style={styles.text}>Day 3 data: {graph.data[2]}</Text>
-              <Text style={styles.text}>Day 4 data: {graph.data[3]}</Text>
-              <Text style={styles.text}>Day 5 data: {graph.data[4]}</Text>
-              <Text style={styles.text}>Day 6 data: {graph.data[5]}</Text>
-              <Text style={styles.text}>Day 7 data: {graph.data[6]}</Text>
+              <Text style={styles.text}>
+                {graph.dateArray[0]} , {graph.dayArray[0]} : {graph.data[0]}
+              </Text>
+              <Text style={styles.text}>
+                {graph.dateArray[1]} , {graph.dayArray[1]} : {graph.data[1]}
+              </Text>
+              <Text style={styles.text}>
+                {graph.dateArray[2]} , {graph.dayArray[2]} : {graph.data[2]}
+              </Text>
+              <Text style={styles.text}>
+                {graph.dateArray[3]} , {graph.dayArray[3]} : {graph.data[3]}
+              </Text>
+              <Text style={styles.text}>
+                {graph.dateArray[4]} , {graph.dayArray[4]} : {graph.data[4]}
+              </Text>
+              <Text style={styles.text}>
+                {graph.dateArray[5]} , {graph.dayArray[5]} : {graph.data[5]}
+              </Text>
+              <Text style={styles.text}>
+                {graph.dateArray[6]} , {graph.dayArray[6]} : {graph.data[6]}
+              </Text>
             </View>
           </Card>
         );
@@ -198,7 +246,7 @@ export default class Counter extends React.Component {
           extraScrollHeight={20}
           navbarColor="#00704a"
           statusBarColor="#fff"
-          title="Coffie Counter"
+          title={this.state.header}
           titleStyle={styles.titleStyle}
           backgroundImage={images.background}
           backgroundImageScale={1.1}
@@ -319,16 +367,12 @@ export default class Counter extends React.Component {
     this.setState({ weekCount: this.state.weekCount + 1 });
     var data = this.state.currentWeekData;
     console.log(this.state.currentWeekData, "the current week data");
-    var endDate = data[data.length - 1].date;
-    var endDay = data[data.length - 1].day;
-    var startDate = data[0].date;
-    var startDay = data[0].day;
+    var dateArray = getDate(this.state.currentWeekData);
+    var dayArray = getDay1(this.state.currentWeekData);
     var fullData = {
       id: this.state.weekCount,
-      endDate: endDate,
-      startDate: startDate,
-      endDay: endDay,
-      startDay: startDay,
+      dateArray: dateArray,
+      dayArray: dayArray,
       data: this.state.dataArray
     };
 
@@ -338,7 +382,7 @@ export default class Counter extends React.Component {
 
     var dataToBeSaved = JSON.stringify(newFUllData);
     try {
-      await AsyncStorage.setItem("fullData1", dataToBeSaved);
+      await AsyncStorage.setItem(this.state.fullDataKey, dataToBeSaved);
       console.log("no error in saving Fulldata");
     } catch (error) {
       // Error saving data
@@ -351,7 +395,10 @@ export default class Counter extends React.Component {
       var arr = [];
       var dataToBeSaved = JSON.stringify(arr);
       try {
-        await AsyncStorage.setItem("currentWeekData1", dataToBeSaved);
+        await AsyncStorage.setItem(
+          this.state.currentWeekDataKey,
+          dataToBeSaved
+        );
         console.log("no error in saving current Week Data");
       } catch (error) {
         // Error saving data
@@ -385,7 +432,10 @@ export default class Counter extends React.Component {
 
       var dataToBeSaved = JSON.stringify(joined);
       try {
-        await AsyncStorage.setItem("currentWeekData1", dataToBeSaved);
+        await AsyncStorage.setItem(
+          this.state.currentWeekDataKey,
+          dataToBeSaved
+        );
         console.log("no error in saving current Week Data");
       } catch (error) {
         // Error saving data
@@ -418,7 +468,7 @@ export default class Counter extends React.Component {
                         var dataToBeSaved = JSON.stringify(arr);
                         try {
                           await AsyncStorage.setItem(
-                            "currentWeekData1",
+                            this.state.currentWeekDataKey,
                             dataToBeSaved
                           );
                           console.log("no error in saving current Week Data");

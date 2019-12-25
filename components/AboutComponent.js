@@ -18,12 +18,14 @@ import {
   ListItem
 } from "react-native-elements";
 import ReactNativeParallaxHeader from "react-native-parallax-header";
+import { ExpoConfigView } from "@expo/samples";
 
 const SCREEN_HEIGHT = Math.round(Dimensions.get("window").height);
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 44 : 20) : 20;
 const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
+const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const images = {
   background: require("./images/orange.jpg") // Put your own image here
@@ -84,8 +86,7 @@ export default class About extends React.Component {
 
   renderContent = () => (
     <View>
-      <Text></Text>
-      <Text></Text>
+      <ExpoConfigView />
       <View style={styles.container}>
         <Text></Text>
         <Text></Text>
@@ -94,23 +95,6 @@ export default class About extends React.Component {
           say hi.
         </Text>
         <Text></Text>
-        <View>
-          <View style={styles.fixToScreen}>
-            <SocialIcon
-              onPress={() =>
-                Linking.openURL("https://join.skype.com/invite/bSsjEVuBEpcN")
-              }
-              light
-              type="skype"
-            />
-          </View>
-        </View>
-        <View>
-          <View style={styles.fixToScreen}>
-            <SocialIcon onPress={this.handleEmail} type="envelope" />
-            <SocialIcon onPress={this.handleWhatsapp} light type="whatsapp" />
-          </View>
-        </View>
         <View>
           <View style={styles.fixToScreen}>
             <SocialIcon
@@ -138,6 +122,13 @@ export default class About extends React.Component {
               // light
               type="codepen"
             />
+            <SocialIcon
+              onPress={() =>
+                Linking.openURL("https://join.skype.com/invite/bSsjEVuBEpcN")
+              }
+              light
+              type="skype"
+            />
           </View>
         </View>
 
@@ -150,21 +141,6 @@ export default class About extends React.Component {
       </View>
     </View>
   );
-
-  handleEmail = () => {
-    const to = ["rishisingh0831@gmail.com"]; // string or array of email addresses
-    email(to, {
-      // Optional additional arguments
-      // cc: ['bazzy@moo.com', 'doooo@daaa.com'], // string or array of email addresses
-      // bcc: 'mee@mee.com', // string or array of email addresses
-      subject: "Share your views."
-      // body: 'Some body right here'
-    }).catch(console.error);
-  };
-
-  handleWhatsapp = () => {
-    Linking.openURL("whatsapp://send?text=hello&phone=+919513087147");
-  };
 }
 
 const styles = StyleSheet.create({
@@ -176,43 +152,20 @@ const styles = StyleSheet.create({
   },
   fixToScreen: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginLeft: 50,
-    marginRight: 50
+    justifyContent: "space-around",
+    minWidth: (SCREEN_WIDTH / 10) * 8,
+    marginLeft: 30,
+    marginRight: 30
   },
   text: {
     fontFamily: "Roboto",
-    fontSize: 17,
+    fontSize: 15,
     color: "#000",
     marginLeft: 30,
     marginRight: 30,
-    lineHeight: 30,
-    letterSpacing: 1
+    lineHeight: 30
+    // letterSpacing: 1
     // textAlign: 'center',
-  },
-  textInput: {
-    fontFamily: "Roboto",
-    fontSize: 17,
-    color: "#000",
-    marginLeft: 30,
-    marginRight: 30,
-    lineHeight: 30,
-    letterSpacing: 1,
-    borderColor: "blue",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 20
-    // textAlign: 'center',
-  },
-  date: {
-    fontFamily: "Roboto",
-    fontSize: 22,
-    color: "#000",
-    marginLeft: 30,
-    marginRight: 30,
-    lineHeight: 30,
-    letterSpacing: 1
   },
   contentContainer: {
     flexGrow: 1
@@ -239,14 +192,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     // marginRight: 80,
     marginTop: 20
-  },
-  button: {
-    marginLeft: 30,
-    marginRight: 30
-  },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: "#737373",
-    borderBottomWidth: StyleSheet.hairlineWidth
   }
 });

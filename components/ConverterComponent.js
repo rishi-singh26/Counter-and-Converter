@@ -13,13 +13,13 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import ReactNativeParallaxHeader from "react-native-parallax-header";
 import { OutlinedTextField } from "react-native-material-textfield";
 
-const SCREEN_HEIGHT = Math.round(Dimensions.get("window").height);
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 44 : 20) : 20;
 const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 const images = {
-  background: require("./images/convert.png") // Put your own image here
+  background: require("./images/blue.jpg") // Put your own image here
 };
 
 const weekDays = [
@@ -60,8 +60,12 @@ export default class Converter extends React.Component {
     decRes: "Result Here",
     bin1Res: "Result Here",
     hexRes: "Result Here",
-    textRes: "Result Here",
-    bin2Res: "Result Here"
+    textToBinRes: "Result Here",
+    binToTextRes: "Result Here",
+    enToPhoneticRes: "Result Here",
+    phoneticToEnRes: "Result Here",
+    morseToEnglishRes: "Result Here",
+    enToMorseRes: "Result Here"
   };
 
   render() {
@@ -117,14 +121,17 @@ export default class Converter extends React.Component {
       <View
         style={{
           padding: 10,
-          margin: 10
+          margin: 10,
+          backgroundColor: "#ededed",
+          borderRadius: 20,
+          paddingTop: 20
         }}
       >
         <OutlinedTextField
           label="Decimal"
           keyboardType="default"
           // formatText={this.formatText}
-          onSubmitEditing={this.onSubmit1}
+          onSubmitEditing={this.decToBinAndHex}
           ref={this.fieldRef1}
         />
         <Text
@@ -140,7 +147,7 @@ export default class Converter extends React.Component {
           label="Binary"
           keyboardType="default"
           // formatText={this.formatText}
-          onSubmitEditing={this.onSubmit2}
+          onSubmitEditing={this.binToDecAndHex}
           ref={this.fieldRef2}
         />
         <Text
@@ -156,7 +163,7 @@ export default class Converter extends React.Component {
           label="Hexadecimal"
           keyboardType="default"
           // formatText={this.formatText}
-          onSubmitEditing={this.onSubmit3}
+          onSubmitEditing={this.hexToBinAndDec}
           ref={this.fieldRef3}
         />
         <Text
@@ -174,14 +181,17 @@ export default class Converter extends React.Component {
       <View
         style={{
           padding: 10,
-          margin: 10
+          margin: 10,
+          backgroundColor: "#ededed",
+          borderRadius: 20,
+          paddingTop: 20
         }}
       >
         <OutlinedTextField
           label="Text"
           keyboardType="default"
           // formatText={this.formatText}
-          onSubmitEditing={this.onSubmit4}
+          onSubmitEditing={this.textToBin}
           ref={this.fieldRef4}
         />
         <Text
@@ -189,7 +199,7 @@ export default class Converter extends React.Component {
             margin: 10
           }}
         >
-          {this.state.textRes}
+          {this.state.textToBinRes}
         </Text>
         <Button title="Copy Result" type="clear" onPress={this.copy4} />
         <Text></Text>
@@ -197,7 +207,7 @@ export default class Converter extends React.Component {
           label="Binary"
           keyboardType="default"
           // formatText={this.formatText}
-          onSubmitEditing={this.onSubmit5}
+          onSubmitEditing={this.binToText}
           ref={this.fieldRef5}
         />
         <Text
@@ -205,18 +215,104 @@ export default class Converter extends React.Component {
             margin: 10
           }}
         >
-          {this.state.bin2Res}
+          {this.state.binToTextRes}
         </Text>
         <Button title="Copy Result" type="clear" onPress={this.copy5} />
       </View>
-      <Text style={styles.text}>
-        You can convert Decimal number to Binary and Hexadecimal...and convert
-        Text to Binary using this app.
-      </Text>
-      <Text style={styles.text}>
-        You can convert Decimal number to Binary and Hexadecimal...and convert
-        Text to Binary using this app.
-      </Text>
+      <Text></Text>
+      <Text></Text>
+      <Text style={styles.text}>Alphabets to NATO Phonetic converter</Text>
+      <View
+        style={{
+          padding: 10,
+          margin: 10,
+          backgroundColor: "#ededed",
+          borderRadius: 20,
+          paddingTop: 20
+        }}
+      >
+        <OutlinedTextField
+          label="Normal Text"
+          keyboardType="default"
+          onSubmitEditing={this.enToPhoneticConversion}
+          ref={this.fieldRef6}
+        />
+        <Text
+          style={{
+            margin: 10
+          }}
+        >
+          {this.state.phoneticToEnRes}
+        </Text>
+        <Button title="Copy Result" type="clear" onPress={this.copy6} />
+        <Text></Text>
+        <OutlinedTextField
+          label="Phonetic Text"
+          keyboardType="default"
+          // formatText={this.formatText}
+          onSubmitEditing={this.phoneticToEnConversion}
+          ref={this.fieldRef7}
+        />
+        <Text
+          style={{
+            margin: 10
+          }}
+        >
+          {this.state.enToPhoneticRes}
+        </Text>
+        <Button title="Copy Result" type="clear" onPress={this.copy7} />
+      </View>
+
+      <Text></Text>
+      <Text></Text>
+      <Text style={styles.text}>English to Morse Code converter</Text>
+      <View
+        style={{
+          padding: 10,
+          margin: 10,
+          backgroundColor: "#ededed",
+          borderRadius: 20,
+          paddingTop: 20
+        }}
+      >
+        <OutlinedTextField
+          label="Normal Text"
+          keyboardType="default"
+          onSubmitEditing={this.enToMorseConversion}
+          ref={this.fieldRef8}
+        />
+        <Text
+          style={{
+            margin: 10
+          }}
+        >
+          {this.state.morseToEnglishRes}
+        </Text>
+        <Button title="Copy Result" type="clear" onPress={this.copy8} />
+        <Text></Text>
+        <OutlinedTextField
+          label="Phonetic Text"
+          keyboardType="default"
+          // formatText={this.formatText}
+          onSubmitEditing={this.morseToEnConversion}
+          ref={this.fieldRef9}
+        />
+        <Text
+          style={{
+            margin: 10
+          }}
+        >
+          {this.state.enToMorseRes}
+        </Text>
+        <Button title="Copy Result" type="clear" onPress={this.copy9} />
+      </View>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
       <Text></Text>
       <Text></Text>
       <Text></Text>
@@ -234,7 +330,333 @@ export default class Converter extends React.Component {
 
   fieldRef5 = React.createRef();
 
-  onSubmit1 = () => {
+  fieldRef6 = React.createRef();
+
+  fieldRef7 = React.createRef();
+
+  fieldRef8 = React.createRef();
+
+  fieldRef9 = React.createRef();
+
+  morseToEnConversion = () => {
+    let { current: field } = this.fieldRef9;
+
+    console.log(field.value());
+
+    var morse = field.value().toUpperCase();
+
+    var results = "";
+
+    var inputArray = morse.split(" ");
+
+    for (var i = 0; i < inputArray.length; i++) {
+      switch (inputArray[i]) {
+        case "._":
+          results = results + "A ";
+          break;
+        case "_...":
+          results = results + "B ";
+          break;
+        case "_._.":
+          results = results + "C ";
+          break;
+        case "_..":
+          results = results + "D ";
+          break;
+        case ".":
+          results = results + "E ";
+          break;
+        case ".._.":
+          results = results + "F ";
+          break;
+        case "__.":
+          results = results + "G ";
+          break;
+        case "....":
+          results = results + "H ";
+          break;
+        case "..":
+          results = results + "I ";
+          break;
+        case ".___":
+          results = results + "J ";
+          break;
+        case "_._":
+          results = results + "K ";
+          break;
+        case "._..":
+          results = results + "L ";
+          break;
+        case "__":
+          results = results + "M ";
+          break;
+        case "_.":
+          results = results + "N ";
+          break;
+        case "___":
+          results = results + "O ";
+          break;
+        case ".__.":
+          results = results + "P ";
+          break;
+        case "__._":
+          results = results + "Q ";
+          break;
+        case "._.":
+          results = results + "R ";
+          break;
+        case "...":
+          results = results + "S ";
+          break;
+        case "_":
+          results = results + "T ";
+          break;
+        case ".._":
+          results = results + "U ";
+          break;
+        case "..._":
+          results = results + "V ";
+          break;
+        case ".__":
+          results = results + "W ";
+          break;
+        case "_.._":
+          results = results + "X ";
+          break;
+        case "_.__":
+          results = results + "Y ";
+          break;
+        case "__..":
+          results = results + "Z ";
+          break;
+        case " ":
+          results = results + ".";
+          break;
+        default:
+          results = results + morse.charAt(i) + " ";
+      }
+    }
+    this.setState({ morseToEnglishRes: results });
+  };
+
+  enToMorseConversion = () => {
+    let { current: field } = this.fieldRef8;
+
+    console.log(field.value());
+
+    var english = field.value().toUpperCase();
+
+    var results = "";
+
+    for (var i = 0; i < english.length; i++) {
+      switch (english.charAt(i)) {
+        case "A":
+          results = results + "._ ";
+          break;
+        case "B":
+          results = results + "_... ";
+          break;
+        case "C":
+          results = results + "_._. ";
+          break;
+        case "D":
+          results = results + "_.. ";
+          break;
+        case "E":
+          results = results + ". ";
+          break;
+        case "F":
+          results = results + ".._. ";
+          break;
+        case "G":
+          results = results + "__. ";
+          break;
+        case "H":
+          results = results + ".... ";
+          break;
+        case "I":
+          results = results + ".. ";
+          break;
+        case "J":
+          results = results + ".___ ";
+          break;
+        case "K":
+          results = results + "_._ ";
+          break;
+        case "L":
+          results = results + "._.. ";
+          break;
+        case "M":
+          results = results + "__ ";
+          break;
+        case "N":
+          results = results + "_. ";
+          break;
+        case "O":
+          results = results + "___ ";
+          break;
+        case "P":
+          results = results + ".__. ";
+          break;
+        case "Q":
+          results = results + "__._ ";
+          break;
+        case "R":
+          results = results + "._. ";
+          break;
+        case "S":
+          results = results + "... ";
+          break;
+        case "T":
+          results = results + "_ ";
+          break;
+        case "U":
+          results = results + ".._ ";
+          break;
+        case "V":
+          results = results + "..._ ";
+          break;
+        case "W":
+          results = results + ".__ ";
+          break;
+        case "X":
+          results = results + "_.._ ";
+          break;
+        case "Y":
+          results = results + "_.__ ";
+          break;
+        case "Z":
+          results = results + "__.. ";
+          break;
+        case " ":
+          results = results + newline + newline;
+          break;
+        default:
+          results = results + text.charAt(i) + " ";
+      }
+    }
+    this.setState({ enToMorseRes: results });
+  };
+
+  phoneticToEnConversion = () => {
+    let { current: field } = this.fieldRef7;
+
+    console.log(field.value());
+
+    var english = field.value().toUpperCase();
+    var inputArray = english.split(" ");
+
+    var resString = "";
+
+    var firstLetter = "";
+
+    for (var i = 0; i < inputArray.length; i++) {
+      firstLetter = inputArray[i][0];
+      resString = resString + firstLetter + " ";
+    }
+    this.setState({ phoneticToEnRes: resString });
+  };
+
+  enToPhoneticConversion = () => {
+    let { current: field } = this.fieldRef6;
+
+    console.log(field.value());
+
+    var english = field.value().toUpperCase();
+
+    var results = "";
+
+    for (var i = 0; i < english.length; i++) {
+      switch (english.charAt(i)) {
+        case "A":
+          results = results + "alfa ";
+          break;
+        case "B":
+          results = results + "bravo ";
+          break;
+        case "C":
+          results = results + "charlie ";
+          break;
+        case "D":
+          results = results + "delta ";
+          break;
+        case "E":
+          results = results + "echo ";
+          break;
+        case "F":
+          results = results + "foxtrot ";
+          break;
+        case "G":
+          results = results + "golf ";
+          break;
+        case "H":
+          results = results + "hotel ";
+          break;
+        case "I":
+          results = results + "india ";
+          break;
+        case "J":
+          results = results + "juliett ";
+          break;
+        case "K":
+          results = results + "kilo ";
+          break;
+        case "L":
+          results = results + "lima ";
+          break;
+        case "M":
+          results = results + "mike ";
+          break;
+        case "N":
+          results = results + "november ";
+          break;
+        case "O":
+          results = results + "oscar ";
+          break;
+        case "P":
+          results = results + "papa ";
+          break;
+        case "Q":
+          results = results + "quebec ";
+          break;
+        case "R":
+          results = results + "romeo ";
+          break;
+        case "S":
+          results = results + "sierra ";
+          break;
+        case "T":
+          results = results + "tango ";
+          break;
+        case "U":
+          results = results + "uniform ";
+          break;
+        case "V":
+          results = results + "victor ";
+          break;
+        case "W":
+          results = results + "whiskey ";
+          break;
+        case "X":
+          results = results + "xray ";
+          break;
+        case "Y":
+          results = results + "yankee ";
+          break;
+        case "Z":
+          results = results + "zulu ";
+          break;
+        case " ":
+          results = results + newline + newline;
+          break;
+        default:
+          results = results + text.charAt(i) + " ";
+      }
+    }
+    this.setState({ enToPhoneticRes: results });
+  };
+
+  decToBinAndHex = () => {
     let { current: field } = this.fieldRef1;
 
     console.log(field.value());
@@ -248,7 +670,7 @@ export default class Converter extends React.Component {
     this.setState({ hexRes: hex });
   };
 
-  onSubmit2 = () => {
+  binToDecAndHex = () => {
     let { current: field } = this.fieldRef2;
 
     console.log(field.value());
@@ -264,7 +686,7 @@ export default class Converter extends React.Component {
     this.setState({ hexRes: hex });
   };
 
-  onSubmit3 = () => {
+  hexToBinAndDec = () => {
     let { current: field } = this.fieldRef3;
 
     console.log(field.value());
@@ -281,7 +703,7 @@ export default class Converter extends React.Component {
     this.setState({ bin1Res: bin });
   };
 
-  onSubmit4 = () => {
+  textToBin = () => {
     let { current: field } = this.fieldRef4;
 
     console.log(field.value());
@@ -294,10 +716,10 @@ export default class Converter extends React.Component {
         return char.charCodeAt(0).toString(2);
       })
       .join(" ");
-    this.setState({ bin2Res: bin });
+    this.setState({ binToTextRes: bin });
   };
 
-  onSubmit5 = () => {
+  binToText = () => {
     let { current: field } = this.fieldRef5;
 
     console.log(field.value());
@@ -307,7 +729,7 @@ export default class Converter extends React.Component {
     input.split(" ").map(function(bin) {
       text += String.fromCharCode(parseInt(bin, 2));
     });
-    this.setState({ textRes: text });
+    this.setState({ textToBinRes: text });
   };
 
   copy1 = () => {
@@ -323,11 +745,27 @@ export default class Converter extends React.Component {
   };
 
   copy4 = () => {
-    Clipboard.setString(this.state.textRes);
+    Clipboard.setString(this.state.textToBinRes);
   };
 
   copy5 = () => {
-    Clipboard.setString(this.state.bin2Res);
+    Clipboard.setString(this.state.binToTextRes);
+  };
+
+  copy6 = () => {
+    Clipboard.setString(this.state.enToPhoneticRes);
+  };
+
+  copy7 = () => {
+    Clipboard.setString(this.state.phoneticToEnRes);
+  };
+
+  copy8 = () => {
+    Clipboard.setString(this.state.morseToEnglishRes);
+  };
+
+  copy9 = () => {
+    Clipboard.setString(this.state.enToMorseRes);
   };
 
   formatText = text => {
@@ -387,11 +825,9 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent"
   },
   titleStyle: {
-    // fontFamily: 'serif',
     fontSize: 35,
     color: "white",
     fontWeight: "bold",
-    // marginRight: 80,
     marginTop: 20
   },
   button: {
