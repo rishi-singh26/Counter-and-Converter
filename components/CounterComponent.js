@@ -24,10 +24,6 @@ const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 const screenWidth = Dimensions.get("window").width;
 
-const images = {
-  background: require("./images/green.jpg") // Put your own image here
-};
-
 const contentInset = { top: 20, bottom: 20 };
 
 // getting the date here
@@ -108,36 +104,43 @@ export default class Counter extends React.Component {
 
   componentDidMount() {
     this.retriveData();
+  }
+
+  retriveData = async () => {
+    var currentWeekDataStorageKey = this.props.navigation.getParam(
+      "currentWeekDataStorageKey",
+      ""
+    );
     this.setState({
       fullDataKey: this.props.navigation.getParam("fullDataStorageKey", "")
     });
     this.setState({
-      fullDataKey: this.props.navigation.getParam(
-        "currentWeekDataStorageKey",
-        ""
-      )
+      currentWeekDataKey: currentWeekDataStorageKey
     });
     this.setState({
       header: this.props.navigation.getParam("header", "")
     });
-  }
-
-  retriveData = async () => {
     try {
-      const value = await AsyncStorage.getItem(this.state.currentWeekDataKey);
+      const value = await AsyncStorage.getItem(currentWeekDataStorageKey);
       if (value !== null) {
         // We have data!!
         var retrivedObj = JSON.parse(value);
         this.setState({ currentWeekData: retrivedObj });
         var count = retrivedObj[retrivedObj.length - 1].count;
         this.setState({ count: count + 1 });
-        console.log("no error in retriving CurrentWeekData");
-        var dataArray = getData(retrivedObj);
+        console.log(
+          "no error in retriving CurrentWeekData from key:",
+          this.state.currentWeekDataKey
+        );
+        var dataArray = getData(this.state.currentWeekData);
         this.setState({ dataArray: dataArray });
       }
     } catch (error) {
       // Error retrieving data
-      console.log("Error while retriving CurrentWeekData");
+      console.log(
+        "Error while retriving CurrentWeekData from key: ",
+        this.state.currentWeekDataKey
+      );
     }
 
     if (1 === 1) {
@@ -149,11 +152,17 @@ export default class Counter extends React.Component {
           this.setState({ fullData: retrivedObj1 });
           var weekCount = retrivedObj1[retrivedObj1.length - 1].id;
           this.setState({ weekCount: weekCount });
-          console.log("no error in retriving FullData");
+          console.log(
+            "no error in retriving FullData from key :",
+            this.state.fullDataKey
+          );
         }
       } catch (error) {
         // Error retrieving data
-        console.log("Error while retriving FullData");
+        console.log(
+          "Error while retriving FullData from key :",
+          this.state.fullDataKey
+        );
       }
     }
   };
@@ -248,7 +257,8 @@ export default class Counter extends React.Component {
           statusBarColor="#fff"
           title={this.state.header}
           titleStyle={styles.titleStyle}
-          backgroundImage={images.background}
+          // backgroundImage={images.background}
+          backgroundColor="#00704a"
           backgroundImageScale={1.1}
           renderNavBar={this.renderNavBar}
           renderContent={this.renderContent}
@@ -294,17 +304,26 @@ export default class Counter extends React.Component {
           label="Enter Today's Data"
           keyboardType="number-pad"
           onSubmitEditing={this.onSubmit}
+          title="Be Careful while entering the data, it can NOT be changed."
           ref={this.fieldRef}
         />
       </View>
+      {/* <View>
+          <Button
+            title="Edit Most Recent Data"
+            titleStyle={{ fontSize: 13 }}
+            type="clear"
+            onPress={() =>
+              navigate("Counter", {
+                fullDataStorageKey: tasks.task + "fullData",
+                currentWeekDataStorageKey:
+                  tasks.task + "currentWeekData1",
+                header: tasks.task
+              })
+            }
+          />
+        </View> */}
       <View>
-        <Text></Text>
-        <View>
-          {/* <View style={styles.fixToScreen}>
-            <Button title="Add This" type="clear" onPress={this.addData} />
-            <SocialIcon onPress={this.addData} light type="plus" />
-          </View> */}
-        </View>
         <Text></Text>
         <Text></Text>
         <View
@@ -346,21 +365,6 @@ export default class Counter extends React.Component {
       </View>
     </View>
   );
-
-  handleEmail = () => {
-    const to = ["rishisingh0831@gmail.com"]; // string or array of email addresses
-    email(to, {
-      // Optional additional arguments
-      // cc: ['bazzy@moo.com', 'doooo@daaa.com'], // string or array of email addresses
-      // bcc: 'mee@mee.com', // string or array of email addresses
-      subject: "Share your views."
-      // body: 'Some body right here'
-    }).catch(console.error);
-  };
-
-  handleWhatsapp = () => {
-    Linking.openURL("whatsapp://send?text=hello&phone=+919513087147");
-  };
 
   // saveData funtion saves the data and renders a card after completion of 7 inputs
   saveData = async () => {
@@ -436,7 +440,10 @@ export default class Counter extends React.Component {
           this.state.currentWeekDataKey,
           dataToBeSaved
         );
-        console.log("no error in saving current Week Data");
+        console.log(
+          "no error in saving current Week Data inside the key:",
+          this.state.currentWeekDataKey
+        );
       } catch (error) {
         // Error saving data
         console.log("Error while saving current week data");

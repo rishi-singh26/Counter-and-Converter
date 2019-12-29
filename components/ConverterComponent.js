@@ -18,10 +18,6 @@ const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 44 : 20) : 20;
 const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
-const images = {
-  background: require("./images/blue.jpg") // Put your own image here
-};
-
 const weekDays = [
   "Monday",
   "Tuesday",
@@ -79,7 +75,8 @@ export default class Converter extends React.Component {
           statusBarColor="#fff"
           title="Converter"
           titleStyle={styles.titleStyle}
-          backgroundImage={images.background}
+          // backgroundImage={images.background}
+          backgroundColor="#039BE6"
           backgroundImageScale={1.1}
           renderNavBar={this.renderNavBar}
           renderContent={this.renderContent}
@@ -111,9 +108,6 @@ export default class Converter extends React.Component {
 
   renderContent = () => (
     <View>
-      <Text></Text>
-      <Text></Text>
-      <Text style={styles.date}>{date}</Text>
       <Text></Text>
       <Text style={styles.text}>
         Decimal to Binary To Hexadecimal Converter
@@ -199,10 +193,21 @@ export default class Converter extends React.Component {
             margin: 10
           }}
         >
-          {this.state.textToBinRes}
+          {this.state.binToTextRes}
         </Text>
-        <Button title="Copy Result" type="clear" onPress={this.copy4} />
-        <Text></Text>
+        <Button title="Copy Result" type="clear" onPress={this.copy5} />
+      </View>
+      <Text></Text>
+      <Text style={styles.text}>Binary to Text Converter</Text>
+      <View
+        style={{
+          padding: 10,
+          margin: 10,
+          backgroundColor: "#ededed",
+          borderRadius: 20,
+          paddingTop: 20
+        }}
+      >
         <OutlinedTextField
           label="Binary"
           keyboardType="default"
@@ -215,9 +220,9 @@ export default class Converter extends React.Component {
             margin: 10
           }}
         >
-          {this.state.binToTextRes}
+          {this.state.textToBinRes}
         </Text>
-        <Button title="Copy Result" type="clear" onPress={this.copy5} />
+        <Button title="Copy Result" type="clear" onPress={this.copy4} />
       </View>
       <Text></Text>
       <Text></Text>
@@ -242,10 +247,23 @@ export default class Converter extends React.Component {
             margin: 10
           }}
         >
-          {this.state.phoneticToEnRes}
+          {this.state.enToPhoneticRes}
         </Text>
         <Button title="Copy Result" type="clear" onPress={this.copy6} />
         <Text></Text>
+      </View>
+      <Text></Text>
+      <Text style={styles.text}>NATO Phonetic to Alphabets converter</Text>
+
+      <View
+        style={{
+          padding: 10,
+          margin: 10,
+          backgroundColor: "#ededed",
+          borderRadius: 20,
+          paddingTop: 20
+        }}
+      >
         <OutlinedTextField
           label="Phonetic Text"
           keyboardType="default"
@@ -258,7 +276,7 @@ export default class Converter extends React.Component {
             margin: 10
           }}
         >
-          {this.state.enToPhoneticRes}
+          {this.state.phoneticToEnRes}
         </Text>
         <Button title="Copy Result" type="clear" onPress={this.copy7} />
       </View>
@@ -286,12 +304,24 @@ export default class Converter extends React.Component {
             margin: 10
           }}
         >
-          {this.state.morseToEnglishRes}
+          {this.state.enToMorseRes}
         </Text>
-        <Button title="Copy Result" type="clear" onPress={this.copy8} />
+        <Button title="Copy Result" type="clear" onPress={this.copy9} />
         <Text></Text>
+      </View>
+      <Text></Text>
+      <Text style={styles.text}>Morse Code to English Converter</Text>
+      <View
+        style={{
+          padding: 10,
+          margin: 10,
+          backgroundColor: "#ededed",
+          borderRadius: 20,
+          paddingTop: 20
+        }}
+      >
         <OutlinedTextField
-          label="Phonetic Text"
+          label="Morse Code"
           keyboardType="default"
           // formatText={this.formatText}
           onSubmitEditing={this.morseToEnConversion}
@@ -302,9 +332,9 @@ export default class Converter extends React.Component {
             margin: 10
           }}
         >
-          {this.state.enToMorseRes}
+          {this.state.morseToEnglishRes}
         </Text>
-        <Button title="Copy Result" type="clear" onPress={this.copy9} />
+        <Button title="Copy Result" type="clear" onPress={this.copy8} />
       </View>
       <Text></Text>
       <Text></Text>
@@ -430,7 +460,7 @@ export default class Converter extends React.Component {
           results = results + "Z ";
           break;
         case " ":
-          results = results + ".";
+          results = results + " ";
           break;
         default:
           results = results + morse.charAt(i) + " ";
@@ -529,7 +559,7 @@ export default class Converter extends React.Component {
           results = results + "__.. ";
           break;
         case " ":
-          results = results + newline + newline;
+          results = results + " " + " ";
           break;
         default:
           results = results + text.charAt(i) + " ";
@@ -552,7 +582,11 @@ export default class Converter extends React.Component {
 
     for (var i = 0; i < inputArray.length; i++) {
       firstLetter = inputArray[i][0];
-      resString = resString + firstLetter + " ";
+      if (firstLetter == undefined) {
+        resString = resString;
+      } else {
+        resString = resString + firstLetter + " ";
+      }
     }
     this.setState({ phoneticToEnRes: resString });
   };
@@ -647,7 +681,7 @@ export default class Converter extends React.Component {
           results = results + "zulu ";
           break;
         case " ":
-          results = results + newline + newline;
+          results = results + " " + " ";
           break;
         default:
           results = results + text.charAt(i) + " ";

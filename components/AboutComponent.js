@@ -27,10 +27,6 @@ const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-const images = {
-  background: require("./images/orange.jpg") // Put your own image here
-};
-
 // class starts here
 
 export default class About extends React.Component {
@@ -54,7 +50,7 @@ export default class About extends React.Component {
           statusBarColor="#fff"
           title="About"
           titleStyle={styles.titleStyle}
-          backgroundImage={images.background}
+          backgroundColor="#FF7544"
           backgroundImageScale={1.1}
           renderNavBar={this.renderNavBar}
           renderContent={this.renderContent}
@@ -91,8 +87,7 @@ export default class About extends React.Component {
         <Text></Text>
         <Text></Text>
         <Text style={styles.text}>
-          Contact Me to share you experiance or to send some feedback or just to
-          say hi.
+          Contact Me to share you experiance or to send some feedback.
         </Text>
         <Text></Text>
         <View>

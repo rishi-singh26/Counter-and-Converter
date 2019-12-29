@@ -30,10 +30,6 @@ const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-const images = {
-  background: require("./images/green.jpg") // Put your own image here
-};
-
 var today = new Date();
 var date =
   today.getDate() +
@@ -73,7 +69,8 @@ export default class CounterHome extends React.Component {
       taskList: [],
       taskNo: 0,
       deletedTaskList: [],
-      showDeletedCounter: false
+      showDeletedCounter: false,
+      deletedCountersBtnTitle: "Show Deleted Counters"
     };
   }
 
@@ -329,7 +326,8 @@ export default class CounterHome extends React.Component {
                   onPress={() =>
                     navigate("Counter", {
                       fullDataStorageKey: tasks.task + "fullData",
-                      currentWeekDataStorageKey: tasks.task + "currentWeekData",
+                      currentWeekDataStorageKey:
+                        tasks.task + "currentWeekData1",
                       header: tasks.task
                     })
                   }
@@ -351,7 +349,8 @@ export default class CounterHome extends React.Component {
           statusBarColor="#fff"
           title="Counter"
           titleStyle={styles.titleStyle}
-          backgroundImage={images.background}
+          // backgroundImage={images.background}
+          backgroundColor="#00704a"
           backgroundImageScale={1.1}
           renderNavBar={this.renderNavBar}
           renderContent={this.renderContent}
@@ -368,23 +367,6 @@ export default class CounterHome extends React.Component {
   }
 
   fieldRef = React.createRef();
-
-  showDeletedCountersBtn = () => {
-    if (this.state.showDeletedTask) {
-      return (
-        <Button
-          title="Show Deleted Counters"
-          titleStyle={{ fontSize: 13 }}
-          type="clear"
-          onPress={() =>
-            this.setState({ showDeletedTask: !this.state.showDeletedTask })
-          }
-        />
-      );
-    } else {
-      return <View></View>;
-    }
-  };
 
   onSubmit = async () => {
     let { current: field } = this.fieldRef;
@@ -418,6 +400,33 @@ export default class CounterHome extends React.Component {
     }
   };
 
+  renderDeletedTasksBtn = () => {
+    if (this.state.deletedTaskList.length != 0) {
+      return (
+        <Button
+          title={this.state.deletedCountersBtnTitle}
+          titleStyle={{ fontSize: 14 }}
+          type="clear"
+          onPress={() => {
+            if (this.state.showDeletedCounter) {
+              this.setState({
+                deletedCountersBtnTitle: "Show Deleted Counters",
+                showDeletedCounter: !this.state.showDeletedCounter
+              });
+            } else {
+              this.setState({
+                deletedCountersBtnTitle: "Hide Deleted Counters",
+                showDeletedCounter: !this.state.showDeletedCounter
+              });
+            }
+          }}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
+
   renderNavBar = () => {
     <View style={styles.navContainer}>
       <View style={styles.statusBar} />
@@ -440,7 +449,6 @@ export default class CounterHome extends React.Component {
           <Text></Text>
           <Text style={styles.date}>{date}</Text>
           <Text></Text>
-          <Text></Text>
           <Text style={styles.boldText}>Create a new counter below.</Text>
           <View
             style={{
@@ -453,9 +461,6 @@ export default class CounterHome extends React.Component {
             <OutlinedTextField
               label="Enter counter name"
               keyboardType="default"
-              //   textColor="white"
-              //   tintColor="white"
-              //   baseColor="white"
               title="Pressing the Enter key on th ekeyboard will create this counter."
               onSubmitEditing={this.onSubmit}
               ref={this.fieldRef}
@@ -471,16 +476,7 @@ export default class CounterHome extends React.Component {
             {renderTasks}
             <Text></Text>
             <Text></Text>
-            <Button
-              title="Show/Hide Deleted Counters"
-              titleStyle={{ fontSize: 14 }}
-              type="clear"
-              onPress={() =>
-                this.setState({
-                  showDeletedCounter: !this.state.showDeletedCounter
-                })
-              }
-            />
+            <this.renderDeletedTasksBtn />
             <Text></Text>
             {renderDeletedTasks}
             <Text></Text>
@@ -554,7 +550,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontFamily: "Roboto",
-    fontSize: 17,
+    fontSize: 20,
     color: "#000",
     marginLeft: 30,
     marginRight: 30,
