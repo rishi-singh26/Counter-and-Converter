@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Counter and Converter",
-    "slug": "countandconvert",
+    "name": "Counter",
+    "slug": "counter",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": ["ios", "android", "web"],
-    "version": "1.2.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -21,9 +21,9 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.ravan.conterandconverter"
+      "package": "com.ravan.conter"
     },
-    "description": "An app to count  and convert stuff.",
+    "description": "An app to count stuff.",
     "githubUrl": "https://github.com/rishi-singh26/Counter-and-Converter"
   }
 }

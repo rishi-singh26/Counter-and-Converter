@@ -7,7 +7,8 @@ import {
   Platform,
   TouchableOpacity,
   Alert,
-  Linking
+  Linking,
+  Switch
 } from "react-native";
 import email from "react-native-email";
 import {
@@ -36,8 +37,25 @@ export default class About extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      switchValue: false,
+      appColor: 1
+    };
   }
+
+  toggleSwitch = value => {
+    //onValueChange of the switch this function will be called
+    this.setState({ switchValue: value });
+    if (this.state.appColor == 1) {
+      this.setState({ appColor: 0 });
+      console.log("App color: dark");
+    } else {
+      this.setState({ appColor: 1 });
+      console.log("App color: light");
+    }
+    //state changes according to switch
+    //which will result in re-render the text
+  };
 
   render() {
     return (
@@ -46,11 +64,11 @@ export default class About extends React.Component {
           headerMinHeight={HEADER_HEIGHT}
           headerMaxHeight={300}
           extraScrollHeight={20}
-          navbarColor="#FF7544"
+          navbarColor="#00704a"
           statusBarColor="#fff"
           title="About"
           titleStyle={styles.titleStyle}
-          backgroundColor="#FF7544"
+          backgroundColor="#00704a"
           backgroundImageScale={1.1}
           renderNavBar={this.renderNavBar}
           renderContent={this.renderContent}
@@ -71,7 +89,7 @@ export default class About extends React.Component {
       <View style={styles.statusBar} />
       <View style={styles.navBar}>
         <TouchableOpacity style={styles.iconLeft} onPress={() => {}}>
-          <Icon name="add" size={25} color="#fff" />
+          <Icon name="search" size={25} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconRight} onPress={() => {}}>
           <Icon name="search" size={25} color="#fff" />
@@ -90,50 +108,66 @@ export default class About extends React.Component {
           Contact Me to share you experiance or to send some feedback.
         </Text>
         <Text></Text>
-        <View>
-          <View style={styles.fixToScreen}>
-            <SocialIcon
-              onPress={() =>
-                Linking.openURL("https://github.com/rishi-singh26")
-              }
-              // light
-              type="github"
-            />
+        <View style={styles.fixToScreen}>
+          <SocialIcon
+            onPress={() => Linking.openURL("https://github.com/rishi-singh26")}
+            // light
+            type="github"
+          />
 
-            <SocialIcon
-              onPress={() =>
-                Linking.openURL(
-                  "https://www.linkedin.com/in/rishi-singh-b2226415b/"
-                )
-              }
-              // light
-              type="linkedin"
-            />
+          <SocialIcon
+            onPress={() =>
+              Linking.openURL(
+                "https://www.linkedin.com/in/rishi-singh-b2226415b/"
+              )
+            }
+            // light
+            type="linkedin"
+          />
 
-            <SocialIcon
-              onPress={() =>
-                Linking.openURL("https://codepen.io/rishisingh-26/")
-              }
-              // light
-              type="codepen"
-            />
-            <SocialIcon
-              onPress={() =>
-                Linking.openURL("https://join.skype.com/invite/bSsjEVuBEpcN")
-              }
-              light
-              type="skype"
-            />
-          </View>
+          <SocialIcon
+            onPress={() => Linking.openURL("https://codepen.io/rishisingh-26/")}
+            // light
+            type="codepen"
+          />
+          <SocialIcon
+            onPress={() =>
+              Linking.openURL("https://join.skype.com/invite/bSsjEVuBEpcN")
+            }
+            light
+            type="skype"
+          />
         </View>
-
-        <Text></Text>
-        <Text></Text>
-        <Text></Text>
-        <Text></Text>
-        <Text></Text>
-        <Text></Text>
       </View>
+      <Text></Text>
+      <Text></Text>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          maxWidth: (SCREEN_WIDTH / 10) * 8,
+          marginLeft: SCREEN_WIDTH / 10
+        }}
+      >
+        <Text>
+          {this.state.switchValue
+            ? "Change to light mode"
+            : "Change to dark mode"}
+        </Text>
+        <Text></Text>
+        <Switch
+          // style={{ marginTop: 30 }}
+          onValueChange={this.toggleSwitch}
+          value={this.state.switchValue}
+        />
+      </View>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
     </View>
   );
 }

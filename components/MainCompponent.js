@@ -18,18 +18,9 @@ const MainNavigator = createBottomTabNavigator({
     screen: CounterHomeNavigator,
     initialRouteName: "CounterHome",
     navigationOptions: {
-      tabBarLabel: "Counter Home",
+      tabBarLabel: "Home",
       tabBarIcon: ({ tintColor }) => (
         <Icon name="home" color={tintColor} size={25} />
-      )
-    }
-  },
-  Converter: {
-    screen: Converter,
-    navigationOptions: {
-      tabBarLabel: "Converter",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="retweet" color={tintColor} size={25} />
       )
     }
   },

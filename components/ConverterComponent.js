@@ -97,10 +97,10 @@ export default class Converter extends React.Component {
       <View style={styles.statusBar} />
       <View style={styles.navBar}>
         <TouchableOpacity style={styles.iconLeft} onPress={() => {}}>
-          <Icon name="add" size={25} color="#fff" />
+          <Icon name="home" size={25} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconRight} onPress={() => {}}>
-          <Icon name="search" size={25} color="#fff" />
+          <Icon name="home" size={25} color="#fff" />
         </TouchableOpacity>
       </View>
     </View>;
