@@ -153,7 +153,7 @@ export default class Counter extends React.Component {
           var retrivedObj1 = JSON.parse(value);
           this.setState({ fullData: retrivedObj1 });
           var weekCount = retrivedObj1[retrivedObj1.length - 1].id;
-          this.setState({ weekCount: weekCount });
+          this.setState({ weekCount: weekCount + 1 });
           console.log(
             "no error in retriving FullData from key :",
             this.state.fullDataKey
@@ -174,21 +174,32 @@ export default class Counter extends React.Component {
   };
 
   editMostRecentData = async () => {
-    console.log(this.state.newData);
-    var currentWeekData = this.state.currentWeekData;
-    currentWeekData[currentWeekData.length - 1].data = this.state.newData;
-    this.setState({ dialogVisible: false, currentWeekData: currentWeekData });
+    if (this.state.currentWeekData.length > 0) {
+      console.log(this.state.newData);
+      console.log(typeof this.state.newData);
+      var newData = Number(this.state.newData);
+      var currentWeekData = this.state.currentWeekData;
+      currentWeekData[currentWeekData.length - 1].data = newData;
+      this.setState({ dialogVisible: false, currentWeekData: currentWeekData });
 
-    var dataToBeSaved = JSON.stringify(this.state.currentWeekData);
-    try {
-      await AsyncStorage.setItem(this.state.currentWeekDataKey, dataToBeSaved);
-      console.log(
-        "no error in saving new most recent data the key:",
-        this.state.currentWeekDataKey
-      );
-    } catch (error) {
-      // Error saving data
-      console.log("Error while saving new most recent data");
+      var dataToBeSaved = JSON.stringify(this.state.currentWeekData);
+      try {
+        await AsyncStorage.setItem(
+          this.state.currentWeekDataKey,
+          dataToBeSaved
+        );
+        console.log(
+          "no error in saving new most recent data the key:",
+          this.state.currentWeekDataKey
+        );
+      } catch (error) {
+        // Error saving data
+        console.log("Error while saving new most recent data");
+      }
+
+      var dataArray = this.state.dataArray;
+      dataArray.pop();
+      dataArray.push(newData);
     }
   };
 
@@ -321,88 +332,20 @@ export default class Counter extends React.Component {
   };
 
   renderContent = () => (
-    <View style={{ minWidth: screenWidth, maxWidth: screenWidth }}>
+    <View style={{ flex: 1, minWidth: screenWidth, maxWidth: screenWidth }}>
       <Text></Text>
       <Text></Text>
       <Text style={styles.date}>{date}</Text>
       <Text></Text>
-      <View
-        style={{
-          padding: 10,
-          margin: 10
-        }}
-      >
-        <OutlinedTextField
-          label="Enter Today's Data"
-          keyboardType="number-pad"
-          onSubmitEditing={this.onSubmit}
-          // title="Be Careful while entering the data, it can NOT be changed."
-          ref={this.fieldRef}
-        />
-      </View>
+      <this.renderTodaysDataTextField />
       <View>
-        <Button
-          title="Edit Most Recent Data"
-          titleStyle={{ fontSize: 13 }}
-          type="clear"
-          onPress={() => {
-            this.setState({ dialogVisible: true });
-          }}
-        />
-        <Dialog.Container visible={this.state.dialogVisible}>
-          <Dialog.Title>Edit Data</Dialog.Title>
-          <Dialog.Description>
-            You can edit the most recently added data.
-          </Dialog.Description>
-          <Dialog.Input
-            label="Enter new Data"
-            wrapperStyle={{
-              borderColor: "black",
-              borderWidth: 1,
-              borderRadius: 5,
-              padding: 5
-            }}
-            onChangeText={text => this.setState({ newData: text })}
-            value={this.state.newData}
-          ></Dialog.Input>
-          <Dialog.Button label="Cancel" onPress={this.toggleDilog} />
-          <Dialog.Button label="Submit" onPress={this.editMostRecentData} />
-        </Dialog.Container>
+        <this.renderEditMostRecentDataBtn />
       </View>
       <Text></Text>
       <View>{list}</View>
+      <Text></Text>
+      <this.renderAddDataButton />
       <View>
-        {/* <Text></Text>
-        <Text></Text>
-        <View
-          style={{
-            height: 200,
-            flexDirection: "row",
-            marginLeft: 10,
-            marginRight: 10
-          }}
-        >
-          <YAxis
-            data={this.state.dataArray}
-            contentInset={contentInset}
-            svg={{
-              fill: "grey",
-              fontSize: 15
-            }}
-            numberOfTicks={5}
-            formatLabel={value => `${value}`}
-            // formatLabel={value => `${value}ºC`}
-          />
-          <LineChart
-            style={{ flex: 1, marginLeft: 16 }}
-            data={this.state.dataArray}
-            svg={{ stroke: "rgb(244, 74, 65)" }}
-            contentInset={contentInset}
-          >
-            <Grid />
-          </LineChart>
-        </View>
-        <Text></Text> */}
         <Text></Text>
         <Text></Text>
         <View>{graphs}</View>
@@ -414,9 +357,144 @@ export default class Counter extends React.Component {
     </View>
   );
 
+  renderTodaysDataTextField = () => {
+    if (this.state.count < 7) {
+      return (
+        <View
+          style={{
+            padding: 10,
+            margin: 10
+          }}
+        >
+          <OutlinedTextField
+            label="Enter Today's Data"
+            keyboardType="number-pad"
+            onSubmitEditing={this.onSubmit}
+            // title="Be Careful while entering the data, it can NOT be changed."
+            ref={this.fieldRef}
+          />
+        </View>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  renderEditMostRecentDataBtn = () => {
+    if (this.state.currentWeekData.length > 0) {
+      return (
+        <View>
+          <Button
+            title="Edit The Most Recent Data"
+            titleStyle={{ fontSize: 13 }}
+            type="clear"
+            onPress={() => {
+              this.setState({ dialogVisible: true });
+            }}
+          />
+          <Dialog.Container visible={this.state.dialogVisible}>
+            <Dialog.Title>Edit Data</Dialog.Title>
+            <Dialog.Description>
+              You can edit the most recently added data.
+            </Dialog.Description>
+            <Dialog.Input
+              label="Enter new Data"
+              wrapperStyle={{
+                borderColor: "black",
+                borderWidth: 1,
+                borderRadius: 5,
+                padding: 5
+              }}
+              keyboardType="number-pad"
+              onChangeText={text => this.setState({ newData: text })}
+              value={this.state.newData}
+            ></Dialog.Input>
+            <Dialog.Button label="Cancel" onPress={this.toggleDilog} />
+            <Dialog.Button label="Submit" onPress={this.editMostRecentData} />
+          </Dialog.Container>
+        </View>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  renderAddDataButton = () => {
+    if (this.state.count >= 7) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            margin: screenWidth / 14
+          }}
+        >
+          <Button
+            title="Delete Data"
+            titleStyle={{ fontSize: 14 }}
+            buttonStyle={{
+              backgroundColor: "green",
+              minWidth: 100,
+              maxWidth: 100
+            }}
+            onPress={() => {
+              Alert.alert(
+                "This Data is unsaved and will be PERMANENTLY DELETED!!",
+                "Aew you sure?",
+                [
+                  {
+                    text: "No, Save it",
+                    onPress: this.saveData
+                  },
+                  {
+                    text: "Yes",
+                    onPress: async () => {
+                      this.setState({ dataArray: [] });
+                      this.setState({ currentWeekData: [], count: 0 });
+                      if (1 === 1) {
+                        var arr = [];
+                        var dataToBeSaved = JSON.stringify(arr);
+                        try {
+                          await AsyncStorage.setItem(
+                            this.state.currentWeekDataKey,
+                            dataToBeSaved
+                          );
+                          console.log("no error in saving current Week Data");
+                        } catch (error) {
+                          // Error saving data
+                          console.log("Error while saving current week data");
+                        }
+                      }
+                      Alert.alert("Data Deleted");
+                    }
+                  }
+                ],
+                { cancelable: true }
+              );
+            }}
+          />
+          <Button
+            title="Add Data"
+            titleStyle={{ fontSize: 14 }}
+            buttonStyle={{
+              backgroundColor: "red",
+              minWidth: 100,
+              maxWidth: 100
+            }}
+            onPress={this.saveData}
+          />
+        </View>
+      );
+    } else {
+      return null;
+    }
+  };
+
   // saveData funtion saves the data and renders a card after completion of 7 inputs
   saveData = async () => {
     this.setState({ weekCount: this.state.weekCount + 1 });
+    this.setState({ weekCount: this.state.weekCount });
     var data = this.state.currentWeekData;
     console.log(this.state.currentWeekData, "the current week data");
     var dateArray = getDate(this.state.currentWeekData);
@@ -457,7 +535,12 @@ export default class Counter extends React.Component {
         console.log("Error while saving current week data");
       }
     }
-    Alert.alert("Data Saved");
+    Alert.alert(
+      "Data saved",
+      "Your data has been saved",
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      { cancelable: true }
+    );
   };
 
   // the find ref and on submit are for the stylised text input
@@ -468,7 +551,7 @@ export default class Counter extends React.Component {
     let { current: field } = this.fieldRef;
     var val = field.value();
 
-    if (this.state.count < 7) {
+    if (field.value().length !== 0 && this.state.count < 7) {
       var todaysData = {
         count: this.state.count,
         data: Number(val),
@@ -497,57 +580,7 @@ export default class Counter extends React.Component {
         console.log("Error while saving current week data");
       }
     } else {
-      count = 0;
-      Alert.alert(
-        "Week Complete",
-        "Do you want to save this week?",
-        [
-          {
-            text: "No",
-            onPress: () => {
-              Alert.alert(
-                "This Data is unsaved and will be PERMANENTLY DELETED!!",
-                "Aew you sure?",
-                [
-                  {
-                    text: "No, Save it",
-                    onPress: this.saveData
-                  },
-                  {
-                    text: "Yes",
-                    onPress: async () => {
-                      this.setState({ dataArray: [] });
-                      this.setState({ currentWeekData: [], count: 0 });
-                      if (1 === 1) {
-                        var arr = [];
-                        var dataToBeSaved = JSON.stringify(arr);
-                        try {
-                          await AsyncStorage.setItem(
-                            this.state.currentWeekDataKey,
-                            dataToBeSaved
-                          );
-                          console.log("no error in saving current Week Data");
-                        } catch (error) {
-                          // Error saving data
-                          console.log("Error while saving current week data");
-                        }
-                      }
-                      Alert.alert("Data Deleted");
-                    }
-                  }
-                ],
-                { cancelable: false }
-              );
-            }
-          },
-
-          {
-            text: "Yes",
-            onPress: this.saveData
-          }
-        ],
-        { cancelable: false }
-      );
+      return null;
     }
   };
 }
