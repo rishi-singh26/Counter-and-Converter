@@ -134,54 +134,6 @@ export default class CounterHome extends React.Component {
                 <Text style={styles.text}>{tasks.task}</Text>
                 <View style={{ flex: 1, flexDirection: "row-reverse" }}>
                   <Button
-                    title="Permanent Delete"
-                    titleStyle={{ color: "red", fontSize: 13 }}
-                    type="clear"
-                    onPress={async () => {
-                      for (
-                        var i = 0;
-                        i < this.state.deletedTaskList.length;
-                        i++
-                      ) {
-                        if (
-                          this.state.deletedTaskList[i].taskNo == tasks.taskNo
-                        ) {
-                          this.state.deletedTaskList.splice(i, 1);
-                          this.setState({
-                            deletedTaskList: this.state.deletedTaskList
-                          });
-
-                          var dataToBeSaved = JSON.stringify(
-                            this.state.deletedTaskList
-                          );
-
-                          try {
-                            await AsyncStorage.setItem(
-                              "deletedData2",
-                              dataToBeSaved
-                            );
-                            console.log("no error in deleting deleted data");
-                          } catch (error) {
-                            // Error saving data
-                            console.log("error in deleting deleted data");
-                          }
-
-                          if (1 === 1) {
-                            try {
-                              await AsyncStorage.multiRemove([
-                                tasks.task + "fullData",
-                                tasks.task + "currentWeekData"
-                              ]);
-                              console.log("No error in permanent deletion");
-                            } catch (error) {
-                              console.log("Error in permanent deletion");
-                            }
-                          }
-                        }
-                      }
-                    }}
-                  />
-                  <Button
                     title="Restore"
                     titleStyle={{ fontSize: 13 }}
                     type="clear"
@@ -245,6 +197,54 @@ export default class CounterHome extends React.Component {
                       }
                     }}
                   />
+                  <Button
+                    title="Permanent Delete"
+                    titleStyle={{ color: "red", fontSize: 13 }}
+                    type="clear"
+                    onPress={async () => {
+                      for (
+                        var i = 0;
+                        i < this.state.deletedTaskList.length;
+                        i++
+                      ) {
+                        if (
+                          this.state.deletedTaskList[i].taskNo == tasks.taskNo
+                        ) {
+                          this.state.deletedTaskList.splice(i, 1);
+                          this.setState({
+                            deletedTaskList: this.state.deletedTaskList
+                          });
+
+                          var dataToBeSaved = JSON.stringify(
+                            this.state.deletedTaskList
+                          );
+
+                          try {
+                            await AsyncStorage.setItem(
+                              "deletedData2",
+                              dataToBeSaved
+                            );
+                            console.log("no error in deleting deleted data");
+                          } catch (error) {
+                            // Error saving data
+                            console.log("error in deleting deleted data");
+                          }
+
+                          if (1 === 1) {
+                            try {
+                              await AsyncStorage.multiRemove([
+                                tasks.task + "fullData",
+                                tasks.task + "currentWeekData"
+                              ]);
+                              console.log("No error in permanent deletion");
+                            } catch (error) {
+                              console.log("Error in permanent deletion");
+                            }
+                          }
+                        }
+                      }
+                    }}
+                  />
                 </View>
               </Card>
               <Text></Text>
@@ -271,6 +271,19 @@ export default class CounterHome extends React.Component {
             >
               <Text style={styles.text}>{tasks.task}</Text>
               <View style={{ flex: 1, flexDirection: "row-reverse" }}>
+                <Button
+                  title="Details"
+                  titleStyle={{ fontSize: 13 }}
+                  type="clear"
+                  onPress={() =>
+                    navigate("Counter", {
+                      fullDataStorageKey: tasks.task + "fullData",
+                      currentWeekDataStorageKey:
+                        tasks.task + "currentWeekData1",
+                      header: tasks.task
+                    })
+                  }
+                />
                 <Button
                   title="Delete"
                   titleStyle={{ color: "red", fontSize: 13 }}
@@ -318,19 +331,6 @@ export default class CounterHome extends React.Component {
                       }
                     }
                   }}
-                />
-                <Button
-                  title="Details"
-                  titleStyle={{ fontSize: 13 }}
-                  type="clear"
-                  onPress={() =>
-                    navigate("Counter", {
-                      fullDataStorageKey: tasks.task + "fullData",
-                      currentWeekDataStorageKey:
-                        tasks.task + "currentWeekData1",
-                      header: tasks.task
-                    })
-                  }
                 />
               </View>
             </Card>
@@ -468,8 +468,8 @@ export default class CounterHome extends React.Component {
           </View>
           <Divider style={{ backgroundColor: "black" }} />
           <View>
-            <Text></Text>
-            <Text></Text>
+            {/* <Text></Text>
+            <Text></Text> */}
             <Text></Text>
             <Text style={styles.boldText}>Existing counters.</Text>
             <Text></Text>

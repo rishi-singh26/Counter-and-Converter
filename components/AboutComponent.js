@@ -19,7 +19,7 @@ import {
   ListItem
 } from "react-native-elements";
 import ReactNativeParallaxHeader from "react-native-parallax-header";
-import { ExpoConfigView } from "@expo/samples";
+// import { ExpoConfigView } from "@expo/samples";
 
 const SCREEN_HEIGHT = Math.round(Dimensions.get("window").height);
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
@@ -100,7 +100,7 @@ export default class About extends React.Component {
 
   renderContent = () => (
     <View>
-      <ExpoConfigView />
+      {/* <ExpoConfigView /> */}
       <View style={styles.container}>
         <Text></Text>
         <Text></Text>

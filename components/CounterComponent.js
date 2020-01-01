@@ -7,15 +7,15 @@ import {
   Platform,
   TouchableOpacity,
   Alert,
-  Linking
+  Linking,
+  FlatList
 } from "react-native";
-import email from "react-native-email";
-import { Button, Icon, Card, Overlay } from "react-native-elements";
+import { Button, Icon, Card, Overlay, ListItem } from "react-native-elements";
 import ReactNativeParallaxHeader from "react-native-parallax-header";
 import { LineChart, YAxis, XAxis, Grid } from "react-native-svg-charts";
 import { OutlinedTextField } from "react-native-material-textfield";
 import { AsyncStorage } from "react-native";
-// import Modal from "react-native-modal";
+import Dialog from "react-native-dialog";
 
 const SCREEN_HEIGHT = Math.round(Dimensions.get("window").height);
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
@@ -95,7 +95,9 @@ export default class Counter extends React.Component {
       weekCount: 0,
       fullDataKey: "",
       currentWeekDataKey: "",
-      header: ""
+      header: "",
+      dialogVisible: false,
+      newData: "" //this sotres the value which the user enters in the edit most recent data dilog box
     };
   }
 
@@ -167,12 +169,42 @@ export default class Counter extends React.Component {
     }
   };
   // this toggels the modal
-  toggleModal = () => {
-    this.setState({ isModalVisible: !this.state.isModalVisible });
+  toggleDilog = () => {
+    this.setState({ dialogVisible: false });
+  };
+
+  editMostRecentData = async () => {
+    console.log(this.state.newData);
+    var currentWeekData = this.state.currentWeekData;
+    currentWeekData[currentWeekData.length - 1].data = this.state.newData;
+    this.setState({ dialogVisible: false, currentWeekData: currentWeekData });
+
+    var dataToBeSaved = JSON.stringify(this.state.currentWeekData);
+    try {
+      await AsyncStorage.setItem(this.state.currentWeekDataKey, dataToBeSaved);
+      console.log(
+        "no error in saving new most recent data the key:",
+        this.state.currentWeekDataKey
+      );
+    } catch (error) {
+      // Error saving data
+      console.log("Error while saving new most recent data");
+    }
   };
 
   render() {
     //  this renders the saved graphs
+
+    list = this.state.currentWeekData
+      .slice(0)
+      .reverse()
+      .map(item => {
+        return (
+          <Text style={styles.text} key={item.count}>
+            {item.day + "," + item.date + ": " + item.data}
+          </Text>
+        );
+      });
 
     graphs = this.state.fullData
       .slice(0)
@@ -289,7 +321,7 @@ export default class Counter extends React.Component {
   };
 
   renderContent = () => (
-    <View style={{ minWidth: screenWidth }}>
+    <View style={{ minWidth: screenWidth, maxWidth: screenWidth }}>
       <Text></Text>
       <Text></Text>
       <Text style={styles.date}>{date}</Text>
@@ -304,27 +336,43 @@ export default class Counter extends React.Component {
           label="Enter Today's Data"
           keyboardType="number-pad"
           onSubmitEditing={this.onSubmit}
-          title="Be Careful while entering the data, it can NOT be changed."
+          // title="Be Careful while entering the data, it can NOT be changed."
           ref={this.fieldRef}
         />
       </View>
-      {/* <View>
-          <Button
-            title="Edit Most Recent Data"
-            titleStyle={{ fontSize: 13 }}
-            type="clear"
-            onPress={() =>
-              navigate("Counter", {
-                fullDataStorageKey: tasks.task + "fullData",
-                currentWeekDataStorageKey:
-                  tasks.task + "currentWeekData1",
-                header: tasks.task
-              })
-            }
-          />
-        </View> */}
       <View>
-        <Text></Text>
+        <Button
+          title="Edit Most Recent Data"
+          titleStyle={{ fontSize: 13 }}
+          type="clear"
+          onPress={() => {
+            this.setState({ dialogVisible: true });
+          }}
+        />
+        <Dialog.Container visible={this.state.dialogVisible}>
+          <Dialog.Title>Edit Data</Dialog.Title>
+          <Dialog.Description>
+            You can edit the most recently added data.
+          </Dialog.Description>
+          <Dialog.Input
+            label="Enter new Data"
+            wrapperStyle={{
+              borderColor: "black",
+              borderWidth: 1,
+              borderRadius: 5,
+              padding: 5
+            }}
+            onChangeText={text => this.setState({ newData: text })}
+            value={this.state.newData}
+          ></Dialog.Input>
+          <Dialog.Button label="Cancel" onPress={this.toggleDilog} />
+          <Dialog.Button label="Submit" onPress={this.editMostRecentData} />
+        </Dialog.Container>
+      </View>
+      <Text></Text>
+      <View>{list}</View>
+      <View>
+        {/* <Text></Text>
         <Text></Text>
         <View
           style={{
@@ -354,7 +402,7 @@ export default class Counter extends React.Component {
             <Grid />
           </LineChart>
         </View>
-        <Text></Text>
+        <Text></Text> */}
         <Text></Text>
         <Text></Text>
         <View>{graphs}</View>
@@ -519,7 +567,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "Roboto",
-    fontSize: 17,
+    fontSize: 15,
     color: "#000",
     marginLeft: 30,
     marginRight: 30,
