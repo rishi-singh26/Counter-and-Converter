@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Counter",
-    "slug": "counter",
+    "name": "Coffie Counter",
+    "slug": "coffiecounter",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": ["ios", "android", "web"],
-    "version": "2.0.0",
+    "version": "2.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {

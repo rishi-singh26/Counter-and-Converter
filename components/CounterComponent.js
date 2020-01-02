@@ -234,6 +234,7 @@ export default class Counter extends React.Component {
             }
             key={graph.id}
             style={styles.container}
+            titleStyle={{ fontSize: 14 }}
             containerStyle={{ borderRadius: 10 }}
             // onPress={() => navigate("Dishdetail", { dishId: item.id })}
           >
@@ -265,25 +266,25 @@ export default class Counter extends React.Component {
               </View>
               <Text></Text>
               <Text style={styles.text}>
-                {graph.dateArray[0]} , {graph.dayArray[0]} : {graph.data[0]}
+                {graph.dayArray[0]}, {graph.dateArray[0]} : {graph.data[0]}
               </Text>
               <Text style={styles.text}>
-                {graph.dateArray[1]} , {graph.dayArray[1]} : {graph.data[1]}
+                {graph.dayArray[1]}, {graph.dateArray[1]} : {graph.data[1]}
               </Text>
               <Text style={styles.text}>
-                {graph.dateArray[2]} , {graph.dayArray[2]} : {graph.data[2]}
+                {graph.dayArray[2]}, {graph.dateArray[2]} : {graph.data[2]}
               </Text>
               <Text style={styles.text}>
-                {graph.dateArray[3]} , {graph.dayArray[3]} : {graph.data[3]}
+                {graph.dayArray[3]}, {graph.dateArray[3]} : {graph.data[3]}
               </Text>
               <Text style={styles.text}>
-                {graph.dateArray[4]} , {graph.dayArray[4]} : {graph.data[4]}
+                {graph.dayArray[4]}, {graph.dateArray[4]} : {graph.data[4]}
               </Text>
               <Text style={styles.text}>
-                {graph.dateArray[5]} , {graph.dayArray[5]} : {graph.data[5]}
+                {graph.dayArray[5]}, {graph.dateArray[5]} : {graph.data[5]}
               </Text>
               <Text style={styles.text}>
-                {graph.dateArray[6]} , {graph.dayArray[6]} : {graph.data[6]}
+                {graph.dayArray[6]}, {graph.dateArray[6]} : {graph.data[6]}
               </Text>
             </View>
           </Card>
@@ -294,7 +295,7 @@ export default class Counter extends React.Component {
       <View style={styles.container}>
         <ReactNativeParallaxHeader
           headerMinHeight={HEADER_HEIGHT}
-          headerMaxHeight={300}
+          headerMaxHeight={350}
           extraScrollHeight={20}
           navbarColor="#00704a"
           statusBarColor="#fff"
@@ -334,16 +335,14 @@ export default class Counter extends React.Component {
   renderContent = () => (
     <View style={{ flex: 1, minWidth: screenWidth, maxWidth: screenWidth }}>
       <Text></Text>
-      <Text></Text>
       <Text style={styles.date}>{date}</Text>
-      <Text></Text>
       <this.renderTodaysDataTextField />
       <View>
         <this.renderEditMostRecentDataBtn />
       </View>
       <Text></Text>
       <View>{list}</View>
-      <Text></Text>
+      {/* <Text></Text> */}
       <this.renderAddDataButton />
       <View>
         <Text></Text>
@@ -600,7 +599,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "Roboto",
-    fontSize: 15,
+    fontSize: 13,
     color: "#000",
     marginLeft: 30,
     marginRight: 30,
@@ -610,9 +609,9 @@ const styles = StyleSheet.create({
   },
   date: {
     fontFamily: "Roboto",
-    fontSize: 22,
+    fontSize: 17,
     color: "#000",
-    marginLeft: 30,
+    marginLeft: screenWidth / 20,
     marginRight: 30,
     lineHeight: 30,
     letterSpacing: 1

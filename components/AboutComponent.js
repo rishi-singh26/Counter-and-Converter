@@ -62,7 +62,7 @@ export default class About extends React.Component {
       <View style={styles.container}>
         <ReactNativeParallaxHeader
           headerMinHeight={HEADER_HEIGHT}
-          headerMaxHeight={300}
+          headerMaxHeight={350}
           extraScrollHeight={20}
           navbarColor="#00704a"
           statusBarColor="#fff"
@@ -98,6 +98,17 @@ export default class About extends React.Component {
     </View>;
   };
 
+  handleEmail = () => {
+    const to = ["feedback_coffiecounter@gmail.com"]; // string or array of email addresses
+    email(to, {
+      // Optional additional arguments
+      // cc: ['bazzy@moo.com', 'doooo@daaa.com'], // string or array of email addresses
+      // bcc: 'mee@mee.com', // string or array of email addresses
+      subject: "My feedback about Coffie Counter."
+      // body: 'Some body right here'
+    }).catch(console.error);
+  };
+
   renderContent = () => (
     <View>
       {/* <ExpoConfigView /> */}
@@ -130,13 +141,15 @@ export default class About extends React.Component {
             // light
             type="codepen"
           />
-          <SocialIcon
+          <SocialIcon onPress={this.handleEmail} type="envelope" />
+
+          {/* <SocialIcon
             onPress={() =>
               Linking.openURL("https://join.skype.com/invite/bSsjEVuBEpcN")
             }
             light
             type="skype"
-          />
+          /> */}
         </View>
       </View>
       <Text></Text>
@@ -152,7 +165,7 @@ export default class About extends React.Component {
       >
         <Text>
           {this.state.switchValue
-            ? "Change to light mode"
+            ? "It's a work in progress."
             : "Change to dark mode"}
         </Text>
         <Text></Text>

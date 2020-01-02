@@ -263,7 +263,7 @@ export default class CounterHome extends React.Component {
           <View key={tasks.taskNo}>
             <Card
               title={tasks.day + "," + tasks.date}
-              titleStyle={{ fontSize: 15 }}
+              titleStyle={{ fontSize: 14 }}
               containerStyle={{
                 borderRadius: 30,
                 borderColor: "#f2f7ff"
@@ -343,7 +343,7 @@ export default class CounterHome extends React.Component {
       <View style={styles.container}>
         <ReactNativeParallaxHeader
           headerMinHeight={HEADER_HEIGHT}
-          headerMaxHeight={300}
+          headerMaxHeight={350}
           extraScrollHeight={20}
           navbarColor="#00704a"
           statusBarColor="#fff"
@@ -446,9 +446,7 @@ export default class CounterHome extends React.Component {
       <ScrollView>
         <View style={{ flex: 1, minWidth: SCREEN_WIDTH }}>
           <Text></Text>
-          <Text></Text>
           <Text style={styles.date}>{date}</Text>
-          <Text></Text>
           <Text style={styles.boldText}>Create a new counter below.</Text>
           <View
             style={{
@@ -475,10 +473,14 @@ export default class CounterHome extends React.Component {
             <Text></Text>
             {renderTasks}
             <Text></Text>
-            <Text></Text>
             <this.renderDeletedTasksBtn />
             <Text></Text>
             {renderDeletedTasks}
+            <Text></Text>
+            <Text></Text>
+            <Text></Text>
+            <Text></Text>
+            <Text></Text>
             <Text></Text>
             <Text></Text>
           </View>
@@ -504,7 +506,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "Roboto",
-    fontSize: 15,
+    fontSize: 13,
     color: "#000",
     marginLeft: 30,
     marginRight: 30,
@@ -550,9 +552,9 @@ const styles = StyleSheet.create({
   },
   date: {
     fontFamily: "Roboto",
-    fontSize: 20,
+    fontSize: 17,
     color: "#000",
-    marginLeft: 30,
+    marginLeft: SCREEN_WIDTH / 20,
     marginRight: 30,
     lineHeight: 30,
     letterSpacing: 1
