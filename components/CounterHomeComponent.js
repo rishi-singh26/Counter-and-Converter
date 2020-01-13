@@ -10,15 +10,7 @@ import {
   Linking,
   ScrollView
 } from "react-native";
-import email from "react-native-email";
-import {
-  SocialIcon,
-  Button,
-  Icon,
-  Card,
-  ListItem,
-  Divider
-} from "react-native-elements";
+import { Button, Icon, Card, Divider } from "react-native-elements";
 import ReactNativeParallaxHeader from "react-native-parallax-header";
 import { OutlinedTextField } from "react-native-material-textfield";
 import { AsyncStorage } from "react-native";
@@ -132,7 +124,13 @@ export default class CounterHome extends React.Component {
                 }}
               >
                 <Text style={styles.text}>{tasks.task}</Text>
-                <View style={{ flex: 1, flexDirection: "row-reverse" }}>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row-reverse",
+                    justifyContent: "space-around"
+                  }}
+                >
                   <Button
                     title="Restore"
                     titleStyle={{ fontSize: 13 }}
@@ -199,7 +197,7 @@ export default class CounterHome extends React.Component {
                   />
                   <Button
                     title="Permanent Delete"
-                    titleStyle={{ color: "red", fontSize: 13 }}
+                    titleStyle={{ color: "gray", fontSize: 13 }}
                     type="clear"
                     onPress={async () => {
                       for (
@@ -234,7 +232,7 @@ export default class CounterHome extends React.Component {
                             try {
                               await AsyncStorage.multiRemove([
                                 tasks.task + "fullData",
-                                tasks.task + "currentWeekData"
+                                tasks.task + "currentWeekData1"
                               ]);
                               console.log("No error in permanent deletion");
                             } catch (error) {
@@ -270,7 +268,13 @@ export default class CounterHome extends React.Component {
               }}
             >
               <Text style={styles.text}>{tasks.task}</Text>
-              <View style={{ flex: 1, flexDirection: "row-reverse" }}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row-reverse",
+                  justifyContent: "space-around"
+                }}
+              >
                 <Button
                   title="Details"
                   titleStyle={{ fontSize: 13 }}
@@ -286,7 +290,7 @@ export default class CounterHome extends React.Component {
                 />
                 <Button
                   title="Delete"
-                  titleStyle={{ color: "red", fontSize: 13 }}
+                  titleStyle={{ color: "gray", fontSize: 13 }}
                   type="clear"
                   onPress={async () => {
                     for (var i = 0; i < this.state.taskList.length; i++) {
