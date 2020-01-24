@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Alert,
   Linking,
-  ScrollView
+  ScrollView,
+  Animated
 } from "react-native";
 import { Button, Icon, Card, Divider } from "react-native-elements";
 import ReactNativeParallaxHeader from "react-native-parallax-header";
@@ -62,7 +63,9 @@ export default class CounterHome extends React.Component {
       taskNo: 0,
       deletedTaskList: [],
       showDeletedCounter: false,
-      deletedCountersBtnTitle: "Show Deleted Counters"
+      deletedCountersBtnTitle: "Show Deleted Counters",
+      createCounter: false //this checks if the create counter area is on or off
+      // fadeValue: new Animated.Value(0)
     };
   }
 
@@ -407,10 +410,8 @@ export default class CounterHome extends React.Component {
   renderDeletedTasksBtn = () => {
     if (this.state.deletedTaskList.length != 0) {
       return (
-        <Button
-          title={this.state.deletedCountersBtnTitle}
-          titleStyle={{ fontSize: 14 }}
-          type="clear"
+        <TouchableOpacity
+          style={{ margin: 10 }}
           onPress={() => {
             if (this.state.showDeletedCounter) {
               this.setState({
@@ -424,7 +425,41 @@ export default class CounterHome extends React.Component {
               });
             }
           }}
-        />
+        >
+          <Text style={{ fontSize: 14, color: "#3d98ff" }}>
+            {this.state.deletedCountersBtnTitle}
+          </Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  renderNewCounterCreator = () => {
+    if (this.state.createCounter || this.state.taskList.length === 0) {
+      return (
+        <View
+          style={[
+            {
+              padding: 10,
+              margin: 10
+            },
+            { opacity: this.state.fadeValue }
+          ]}
+        >
+          <Text style={styles.boldText}>Create a new counter below.</Text>
+
+          <Text>Name of every counter should be different.</Text>
+          <Text></Text>
+          <OutlinedTextField
+            label="Enter counter name"
+            keyboardType="default"
+            title="Pressing the enter key on the keyboard will create this counter."
+            onSubmitEditing={this.onSubmit}
+            ref={this.fieldRef}
+          />
+        </View>
       );
     } else {
       return null;
@@ -446,38 +481,60 @@ export default class CounterHome extends React.Component {
   };
 
   renderContent = () => (
-    <View>
+    <View style={{ backgroundColor: "#f5f5f5" }}>
       <ScrollView>
         <View style={{ flex: 1, minWidth: SCREEN_WIDTH }}>
           <Text></Text>
-          <Text style={styles.date}>{date}</Text>
-          <Text style={styles.boldText}>Create a new counter below.</Text>
-          <View
-            style={{
-              padding: 10,
-              margin: 10
-            }}
-          >
-            <Text>Name of every counter should be different.</Text>
-            <Text></Text>
-            <OutlinedTextField
-              label="Enter counter name"
-              keyboardType="default"
-              title="Pressing the Enter key on th ekeyboard will create this counter."
-              onSubmitEditing={this.onSubmit}
-              ref={this.fieldRef}
-            />
+          <View style={styles.navBar}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "flex-start",
+                alignItems: "center",
+                flexDirection: "row",
+                backgroundColor: "transparent"
+              }}
+            >
+              <Text style={styles.date}>{date}</Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "flex-end",
+                alignItems: "center",
+                flexDirection: "row",
+                backgroundColor: "transparent",
+                marginRight: SCREEN_WIDTH / 20
+              }}
+            >
+              <TouchableOpacity
+                style={{ margin: 10 }}
+                onPress={() => {
+                  this.setState({ createCounter: !this.state.createCounter });
+                  // Animated.timing(this.state.fadeValue, {
+                  //   toValue: 1,
+                  //   duration: 1000
+                  // }).start();
+                }}
+              >
+                <Icon name="add" size={30} color="#000" />
+                {/* <Text style={{ color: "#3d98ff" }}>New Counter</Text> */}
+              </TouchableOpacity>
+            </View>
           </View>
-          <Divider style={{ backgroundColor: "black" }} />
+          <this.renderNewCounterCreator />
           <View>
-            {/* <Text></Text>
-            <Text></Text> */}
-            <Text></Text>
-            <Text style={styles.boldText}>Existing counters.</Text>
-            <Text></Text>
             {renderTasks}
             <Text></Text>
-            <this.renderDeletedTasksBtn />
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-around"
+              }}
+            >
+              <this.renderDeletedTasksBtn />
+            </View>
             <Text></Text>
             {renderDeletedTasks}
             <Text></Text>
@@ -530,8 +587,9 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent"
   },
   navBar: {
+    flex: 1,
     height: NAV_BAR_HEIGHT,
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
     flexDirection: "row",
     backgroundColor: "transparent"
@@ -548,8 +606,6 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     fontSize: 15,
     color: "#000",
-    marginLeft: 20,
-    marginRight: 30,
     lineHeight: 30,
     letterSpacing: 1,
     fontWeight: "bold"

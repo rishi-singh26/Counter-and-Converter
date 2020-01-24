@@ -333,7 +333,14 @@ export default class Counter extends React.Component {
   };
 
   renderContent = () => (
-    <View style={{ flex: 1, minWidth: screenWidth, maxWidth: screenWidth }}>
+    <View
+      style={{
+        flex: 1,
+        minWidth: screenWidth,
+        maxWidth: screenWidth,
+        backgroundColor: "#f5f5f5"
+      }}
+    >
       <Text></Text>
       <Text style={styles.date}>{date}</Text>
       <this.renderTodaysDataTextField />
