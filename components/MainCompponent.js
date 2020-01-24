@@ -3,6 +3,7 @@ import Counter from "./CounterComponent";
 import Converter from "./ConverterComponent";
 import About from "./AboutComponent";
 import CounterHome from "./CounterHomeComponent";
+import Search from "./SearchComponent";
 import { createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
@@ -10,7 +11,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 const CounterHomeNavigator = createStackNavigator({
   CounterHome: { screen: CounterHome },
-  Counter: { screen: Counter }
+  Counter: { screen: Counter },
+  Search: { screen: Search }
 });
 
 const MainNavigator = createBottomTabNavigator({

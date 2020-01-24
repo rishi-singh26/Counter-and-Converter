@@ -377,6 +377,18 @@ export default class CounterHome extends React.Component {
 
   onSubmit = async () => {
     let { current: field } = this.fieldRef;
+    for (var i = 0; i < this.state.taskList.length; i++) {
+      if (this.state.taskList[i].task == field.value()) {
+        alert(field.value() + " counter alredy exists");
+        return;
+      }
+    }
+    for (var i = 0; i < this.state.deletedTaskList.length; i++) {
+      if (this.state.deletedTaskList[i].task == field.value()) {
+        alert(field.value() + " counter alredy exists in deleted counter list");
+        return;
+      }
+    }
     if (field.value().length === 0) {
       return null;
     } else {
@@ -507,6 +519,17 @@ export default class CounterHome extends React.Component {
                 marginRight: SCREEN_WIDTH / 20
               }}
             >
+              <TouchableOpacity
+                style={{ margin: 10 }}
+                onPress={() => {
+                  this.props.navigation.navigate("Search", {
+                    counterList: this.state.taskList,
+                    deletedCounterList: this.state.deletedTaskList
+                  });
+                }}
+              >
+                <Icon name="search" size={25} color="#000" />
+              </TouchableOpacity>
               <TouchableOpacity
                 style={{ margin: 10 }}
                 onPress={() => {
