@@ -16,7 +16,7 @@ import ReactNativeParallaxHeader from "react-native-parallax-header";
 import { OutlinedTextField } from "react-native-material-textfield";
 import { AsyncStorage } from "react-native";
 
-const SCREEN_HEIGHT = Math.round(Dimensions.get("window").height);
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 44 : 20) : 20;
 const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
@@ -122,8 +122,17 @@ export default class CounterHome extends React.Component {
               <Card
                 title={tasks.date}
                 containerStyle={{
-                  borderRadius: 30,
-                  borderColor: "#f2f7ff"
+                  borderRadius: 20,
+                  borderColor: "#fff",
+                  // shadowColor: "#000",
+                  // shadowOffset: {
+                  //   width: 0,
+                  //   height: 9
+                  // },
+                  // shadowOpacity: 0.0,
+                  // shadowRadius: 11.95,
+
+                  elevation: 5
                 }}
               >
                 <Text style={styles.text}>{tasks.task}</Text>
@@ -266,8 +275,17 @@ export default class CounterHome extends React.Component {
               title={tasks.day + "," + tasks.date}
               titleStyle={{ fontSize: 14 }}
               containerStyle={{
-                borderRadius: 30,
-                borderColor: "#f2f7ff"
+                borderRadius: 20,
+                borderColor: "#fff",
+                // shadowColor: "#000",
+                // shadowOffset: {
+                //   width: 0,
+                //   height: 9
+                // },
+                // shadowOpacity: 0.0,
+                // shadowRadius: 11.95,
+
+                elevation: 5
               }}
             >
               <Text style={styles.text}>{tasks.task}</Text>
@@ -350,7 +368,7 @@ export default class CounterHome extends React.Component {
       <View style={styles.container}>
         <ReactNativeParallaxHeader
           headerMinHeight={HEADER_HEIGHT}
-          headerMaxHeight={350}
+          headerMaxHeight={(SCREEN_HEIGHT / 10) * 4}
           extraScrollHeight={20}
           navbarColor="#00704a"
           statusBarColor="#fff"

@@ -62,7 +62,7 @@ export default class About extends React.Component {
       <View style={styles.container}>
         <ReactNativeParallaxHeader
           headerMinHeight={HEADER_HEIGHT}
-          headerMaxHeight={350}
+          headerMaxHeight={(SCREEN_HEIGHT/10)*4}
           extraScrollHeight={20}
           navbarColor="#00704a"
           statusBarColor="#fff"
@@ -115,11 +115,22 @@ export default class About extends React.Component {
       <View style={styles.container}>
         <Text></Text>
         <Text></Text>
-        <Text style={styles.text}>
-          Contact Me to share you experiance or to send some feedback.
-        </Text>
+        <TouchableOpacity onPress={this.handleEmail}>
+          <Text
+            style={{
+              color: "#3d98ff",
+              fontFamily: "Roboto",
+              fontSize: 15,
+              marginLeft: 30,
+              marginRight: 30,
+              lineHeight: 30
+            }}
+          >
+            Contact Me to share you experiance or to send some feedback.
+          </Text>
+        </TouchableOpacity>
         <Text></Text>
-        <View style={styles.fixToScreen}>
+        {/* <View style={styles.fixToScreen}>
           <SocialIcon
             onPress={() => Linking.openURL("https://github.com/rishi-singh26")}
             // light
@@ -143,16 +154,16 @@ export default class About extends React.Component {
           />
           <SocialIcon onPress={this.handleEmail} type="envelope" />
 
-          {/* <SocialIcon
+          <SocialIcon
             onPress={() =>
               Linking.openURL("https://join.skype.com/invite/bSsjEVuBEpcN")
             }
             light
             type="skype"
-          /> */}
-        </View>
+          />
+        </View> */}
       </View>
-      <Text></Text>
+      {/* <Text></Text>
       <Text></Text>
       <View
         style={{
@@ -174,7 +185,7 @@ export default class About extends React.Component {
           onValueChange={this.toggleSwitch}
           value={this.state.switchValue}
         />
-      </View>
+      </View> */}
       <Text></Text>
       <Text></Text>
       <Text></Text>

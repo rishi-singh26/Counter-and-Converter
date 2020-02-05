@@ -51,8 +51,17 @@ class Search extends React.Component {
             title={existing.day + "," + existing.date}
             titleStyle={{ fontSize: 14 }}
             containerStyle={{
-              borderRadius: 30,
-              borderColor: "#f2f7ff"
+              borderRadius: 20,
+              borderColor: "#fff",
+              // shadowColor: "#000",
+              // shadowOffset: {
+              //   width: 0,
+              //   height: 9
+              // },
+              // shadowOpacity: 0.0,
+              // shadowRadius: 11.95,
+
+              elevation: 5
             }}
           >
             <Text style={existing.text}>{existing.task}</Text>
@@ -178,7 +187,7 @@ class Search extends React.Component {
     });
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
         <ScrollView>
           <View style={{ margin: SCREEN_WIDTH / 30 }}>
             <this.renderShowSearchInputBtn />

@@ -295,7 +295,7 @@ export default class Counter extends React.Component {
       <View style={styles.container}>
         <ReactNativeParallaxHeader
           headerMinHeight={HEADER_HEIGHT}
-          headerMaxHeight={350}
+          headerMaxHeight={(SCREEN_HEIGHT/10)*4}
           extraScrollHeight={20}
           navbarColor="#00704a"
           statusBarColor="#fff"
