@@ -61,7 +61,7 @@ class Search extends React.Component {
               // shadowOpacity: 0.0,
               // shadowRadius: 11.95,
 
-              elevation: 5
+              elevation: 0
             }}
           >
             <Text style={existing.text}>{existing.task}</Text>

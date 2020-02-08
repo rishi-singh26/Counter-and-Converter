@@ -131,8 +131,7 @@ export default class CounterHome extends React.Component {
                   // },
                   // shadowOpacity: 0.0,
                   // shadowRadius: 11.95,
-
-                  elevation: 5
+                  elevation: 0
                 }}
               >
                 <Text style={styles.text}>{tasks.task}</Text>
@@ -277,15 +276,7 @@ export default class CounterHome extends React.Component {
               containerStyle={{
                 borderRadius: 20,
                 borderColor: "#fff",
-                // shadowColor: "#000",
-                // shadowOffset: {
-                //   width: 0,
-                //   height: 9
-                // },
-                // shadowOpacity: 0.0,
-                // shadowRadius: 11.95,
-
-                elevation: 5
+                elevation: 0
               }}
             >
               <Text style={styles.text}>{tasks.task}</Text>
@@ -359,7 +350,7 @@ export default class CounterHome extends React.Component {
                 />
               </View>
             </Card>
-            <Text></Text>
+            <Text style={{ maxHeight: 6 }}></Text>
           </View>
         );
       });
@@ -552,21 +543,16 @@ export default class CounterHome extends React.Component {
                 style={{ margin: 10 }}
                 onPress={() => {
                   this.setState({ createCounter: !this.state.createCounter });
-                  // Animated.timing(this.state.fadeValue, {
-                  //   toValue: 1,
-                  //   duration: 1000
-                  // }).start();
                 }}
               >
                 <Icon name="add" size={30} color="#000" />
-                {/* <Text style={{ color: "#3d98ff" }}>New Counter</Text> */}
               </TouchableOpacity>
             </View>
           </View>
           <this.renderNewCounterCreator />
           <View>
             {renderTasks}
-            <Text></Text>
+            <Text style={{ maxHeight: 15 }}></Text>
             <View
               style={{
                 flex: 1,
@@ -578,13 +564,6 @@ export default class CounterHome extends React.Component {
             </View>
             <Text></Text>
             {renderDeletedTasks}
-            <Text></Text>
-            <Text></Text>
-            <Text></Text>
-            <Text></Text>
-            <Text></Text>
-            <Text></Text>
-            <Text></Text>
           </View>
         </View>
       </ScrollView>
@@ -636,11 +615,9 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent"
   },
   titleStyle: {
-    // fontFamily: 'serif',
     fontSize: 35,
     color: "white",
     fontWeight: "bold",
-    // marginRight: 80,
     marginTop: 20
   },
   boldText: {

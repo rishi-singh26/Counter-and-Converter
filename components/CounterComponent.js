@@ -235,8 +235,11 @@ export default class Counter extends React.Component {
             key={graph.id}
             style={styles.container}
             titleStyle={{ fontSize: 14 }}
-            containerStyle={{ borderRadius: 10 }}
-            // onPress={() => navigate("Dishdetail", { dishId: item.id })}
+            containerStyle={{
+              borderRadius: 20,
+              borderColor: "#fff",
+              elevation: 0
+            }}
           >
             <View style={styles.user}>
               <View
@@ -295,7 +298,7 @@ export default class Counter extends React.Component {
       <View style={styles.container}>
         <ReactNativeParallaxHeader
           headerMinHeight={HEADER_HEIGHT}
-          headerMaxHeight={(SCREEN_HEIGHT/10)*4}
+          headerMaxHeight={(SCREEN_HEIGHT / 10) * 4}
           extraScrollHeight={20}
           navbarColor="#00704a"
           statusBarColor="#fff"

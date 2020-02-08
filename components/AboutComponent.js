@@ -62,7 +62,7 @@ export default class About extends React.Component {
       <View style={styles.container}>
         <ReactNativeParallaxHeader
           headerMinHeight={HEADER_HEIGHT}
-          headerMaxHeight={(SCREEN_HEIGHT/10)*4}
+          headerMaxHeight={(SCREEN_HEIGHT / 10) * 4}
           extraScrollHeight={20}
           navbarColor="#00704a"
           statusBarColor="#fff"
@@ -129,7 +129,7 @@ export default class About extends React.Component {
             Contact Me to share you experiance or to send some feedback.
           </Text>
         </TouchableOpacity>
-        <Text></Text>
+        <Text style={{ minHeight: 460 }}></Text>
         {/* <View style={styles.fixToScreen}>
           <SocialIcon
             onPress={() => Linking.openURL("https://github.com/rishi-singh26")}
