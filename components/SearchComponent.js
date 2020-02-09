@@ -96,14 +96,16 @@ class Search extends React.Component {
       return (
         <View key={deleted.taskNo}>
           <Card
-            title={deleted.date + ", Deleted"}
+            title={deleted.day + "," + deleted.date + ", (Deleted)"}
+            titleStyle={{ fontSize: 14 }}
             containerStyle={{
-              borderRadius: 30,
-              borderColor: "#f2f7ff"
+              borderRadius: 20,
+              borderColor: "#fff",
+              elevation: 0
             }}
           >
             <Text>{deleted.task}</Text>
-            <View
+            {/* <View
               style={{
                 flex: 1,
                 flexDirection: "row-reverse",
@@ -123,7 +125,7 @@ class Search extends React.Component {
                   })
                 }
               />
-              {/* <Button
+              <Button
                 title="Restore"
                 titleStyle={{ fontSize: 13 }}
                 type="clear"
@@ -178,8 +180,8 @@ class Search extends React.Component {
                     }
                   }
                 }}
-              /> */}
-            </View>
+              />
+            </View> */}
           </Card>
           <Text></Text>
         </View>
@@ -193,7 +195,8 @@ class Search extends React.Component {
             <this.renderShowSearchInputBtn />
             <this.renderSearchInput />
             {renderExistingSearch}
-            {/* {renderDeletedSearch} */}
+            {renderDeletedSearch}
+            <this.renderShowSearchInputBtn />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -213,7 +216,8 @@ class Search extends React.Component {
           onPress={() => {
             this.setState({
               showSearchInput: !this.state.showSearchInput,
-              existingSearch: []
+              existingSearch: [],
+              deletedSearch: []
             });
           }}
         >

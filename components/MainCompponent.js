@@ -23,7 +23,15 @@ const MainNavigator = createBottomTabNavigator({
       tabBarLabel: "Home",
       tabBarIcon: ({ tintColor }) => (
         <Icon name="home" color={tintColor} size={25} />
-      )
+      ),
+      tabBarOptions: {
+        tabStyle: {
+          backgroundColor: "#f5f5f5"
+        },
+        style: {
+          borderTopColor: "#f5f5f5"
+        }
+      }
     }
   },
   About: {
@@ -32,7 +40,15 @@ const MainNavigator = createBottomTabNavigator({
       tabBarLabel: "About",
       tabBarIcon: ({ tintColor }) => (
         <Icon name="info-circle" color={tintColor} size={25} />
-      )
+      ),
+      tabBarOptions: {
+        tabStyle: {
+          backgroundColor: "#f5f5f5"
+        },
+        style: {
+          borderTopColor: "#f5f5f5"
+        }
+      }
     }
   }
 });

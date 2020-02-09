@@ -120,7 +120,8 @@ export default class CounterHome extends React.Component {
           return (
             <View key={tasks.taskNo}>
               <Card
-                title={tasks.date}
+                title={tasks.day + "," + tasks.date}
+                titleStyle={{ fontSize: 14 }}
                 containerStyle={{
                   borderRadius: 20,
                   borderColor: "#fff",
@@ -363,7 +364,7 @@ export default class CounterHome extends React.Component {
           extraScrollHeight={20}
           navbarColor="#00704a"
           statusBarColor="#fff"
-          title="Counter"
+          title="CoffieCounter"
           titleStyle={styles.titleStyle}
           // backgroundImage={images.background}
           backgroundColor="#00704a"
@@ -566,6 +567,7 @@ export default class CounterHome extends React.Component {
             {renderDeletedTasks}
           </View>
         </View>
+        <Text style={{ minHeight: (SCREEN_HEIGHT / 10) * 6 }}></Text>
       </ScrollView>
     </View>
   );

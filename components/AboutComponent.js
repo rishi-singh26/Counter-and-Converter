@@ -129,7 +129,7 @@ export default class About extends React.Component {
             Contact Me to share you experiance or to send some feedback.
           </Text>
         </TouchableOpacity>
-        <Text style={{ minHeight: 460 }}></Text>
+        <Text style={{ minHeight: (SCREEN_HEIGHT / 10) * 8 }}></Text>
         {/* <View style={styles.fixToScreen}>
           <SocialIcon
             onPress={() => Linking.openURL("https://github.com/rishi-singh26")}
@@ -186,12 +186,6 @@ export default class About extends React.Component {
           value={this.state.switchValue}
         />
       </View> */}
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
-      <Text></Text>
     </View>
   );
 }
@@ -199,7 +193,7 @@ export default class About extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f5f5",
     alignItems: "center",
     justifyContent: "center"
   },
