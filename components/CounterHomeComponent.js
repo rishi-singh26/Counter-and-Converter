@@ -19,7 +19,7 @@ import { AsyncStorage } from "react-native";
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 44 : 20) : 20;
-const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
+const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 90;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -502,6 +502,18 @@ export default class CounterHome extends React.Component {
     </View>;
   };
 
+  renderEmptySpace = () => {
+    if (this.state.taskList.length < 2) {
+      return <View style={{ minHeight: (SCREEN_HEIGHT / 10) * 6 }}></View>;
+    } else if (this.state.taskList.length < 3) {
+      return <View style={{ minHeight: (SCREEN_HEIGHT / 10) * 4 }}></View>;
+    } else if (this.state.taskList.length < 4) {
+      return <View style={{ minHeight: (SCREEN_HEIGHT / 10) * 2 }}></View>;
+    } else {
+      return null;
+    }
+  };
+
   renderContent = () => (
     <View style={{ backgroundColor: "#f5f5f5" }}>
       <ScrollView>
@@ -566,8 +578,8 @@ export default class CounterHome extends React.Component {
             <Text></Text>
             {renderDeletedTasks}
           </View>
+          <this.renderEmptySpace />
         </View>
-        <Text style={{ minHeight: (SCREEN_HEIGHT / 10) * 6 }}></Text>
       </ScrollView>
     </View>
   );
@@ -617,7 +629,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent"
   },
   titleStyle: {
-    fontSize: 35,
+    fontSize: 30,
     color: "white",
     fontWeight: "bold",
     marginTop: 20

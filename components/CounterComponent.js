@@ -20,7 +20,7 @@ import Dialog from "react-native-dialog";
 const SCREEN_HEIGHT = Math.round(Dimensions.get("window").height);
 const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 44 : 20) : 20;
-const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 100;
+const HEADER_HEIGHT = Platform.OS === "ios" ? (IS_IPHONE_X ? 88 : 64) : 90;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 const screenWidth = Dimensions.get("window").width;
 
@@ -78,6 +78,14 @@ function getDate(obj) {
   return pushArray;
 }
 
+function getCompleteDataInOneArray(arr) {
+  completeDataArray = [];
+  for (i = 0; i < arr.length; i++) {
+    completeDataArray = completeDataArray.concat(arr[i].data);
+  }
+  return completeDataArray;
+}
+
 // class starts here
 
 export default class Counter extends React.Component {
@@ -97,12 +105,12 @@ export default class Counter extends React.Component {
       currentWeekDataKey: "",
       header: "",
       dialogVisible: false,
+      completeDataInOneArray: "",
+      completeDataGraphVisible: false, //it manages the complete data graph
+      completeDataShowBtnText: "Show a Graph For Complete Data",
       newData: "" //this sotres the value which the user enters in the edit most recent data dilog box
     };
   }
-
-  // fullDataKey =
-  // currentWeekDataKey =
 
   componentDidMount() {
     this.retriveData();
@@ -129,7 +137,7 @@ export default class Counter extends React.Component {
         var retrivedObj = JSON.parse(value);
         this.setState({ currentWeekData: retrivedObj });
         var count = retrivedObj[retrivedObj.length - 1].count;
-        this.setState({ count: count + 1 });
+        this.setState({ count: count + Math.random(100) + Math.random(100) });
         console.log(
           "no error in retriving CurrentWeekData from key:",
           this.state.currentWeekDataKey
@@ -153,7 +161,9 @@ export default class Counter extends React.Component {
           var retrivedObj1 = JSON.parse(value);
           this.setState({ fullData: retrivedObj1 });
           var weekCount = retrivedObj1[retrivedObj1.length - 1].id;
-          this.setState({ weekCount: weekCount + 1 });
+          this.setState({
+            weekCount: weekCount + Math.random(100) + Math.random(100)
+          });
           console.log(
             "no error in retriving FullData from key :",
             this.state.fullDataKey
@@ -211,7 +221,12 @@ export default class Counter extends React.Component {
       .reverse()
       .map(item => {
         return (
-          <Text style={styles.text} key={item.count}>
+          <Text
+            style={
+              (styles.text, { marginLeft: 15, marginBottom: 10, marginTop: 10 })
+            }
+            key={item.count}
+          >
             {item.day + "," + item.date + ": " + item.data}
           </Text>
         );
@@ -346,25 +361,91 @@ export default class Counter extends React.Component {
     >
       <Text></Text>
       <Text style={styles.date}>{date}</Text>
-      <this.renderTodaysDataTextField />
-      <View>
-        <this.renderEditMostRecentDataBtn />
-      </View>
       <Text></Text>
-      <View>{list}</View>
-      {/* <Text></Text> */}
+      <this.renderTodaysDataTextField />
+      <Text></Text>
+      <this.renderCurrentWeekData />
+      <this.renderEditMostRecentDataBtn />
       <this.renderAddDataButton />
       <View>
-        <Text></Text>
-        <Text></Text>
         <View>{graphs}</View>
-        <Text></Text>
-        <Text></Text>
-        <Text></Text>
-        <Text></Text>
       </View>
+      <Text></Text>
+      <this.renderCompleteDataGraph />
+      <this.renderShowCompleteDataGraphBtn />
     </View>
   );
+
+  renderCurrentWeekData = () => {
+    if (this.state.currentWeekData.length > 0) {
+      return (
+        <View
+          style={{
+            backgroundColor: "white",
+            borderRadius: 20,
+            padding: 15,
+            marginLeft: screenWidth / 25,
+            marginRight: screenWidth / 25
+          }}
+        >
+          {list}
+        </View>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  formatText = text => {
+    return text.replace(/[^\d+(.\d+){0,1}]/g, "");
+  };
+
+  renderCompleteDataGraph = () => {
+    if (this.state.completeDataGraphVisible) {
+      return (
+        <View
+          style={
+            (styles.user,
+            {
+              backgroundColor: "white",
+              borderRadius: 20,
+              padding: 15,
+              marginLeft: screenWidth / 25,
+              marginRight: screenWidth / 25
+            })
+          }
+        >
+          <View
+            style={{
+              height: 200,
+              flexDirection: "row"
+            }}
+          >
+            <YAxis
+              data={this.state.completeDataInOneArray}
+              contentInset={contentInset}
+              svg={{
+                fill: "grey",
+                fontSize: 15
+              }}
+              numberOfTicks={5}
+              formatLabel={value => `${value}`}
+            />
+            <LineChart
+              style={{ flex: 1, marginLeft: 16 }}
+              data={this.state.completeDataInOneArray}
+              svg={{ stroke: "rgb(244, 74, 65)" }}
+              contentInset={contentInset}
+            >
+              <Grid />
+            </LineChart>
+          </View>
+        </View>
+      );
+    } else {
+      return null;
+    }
+  };
 
   renderTodaysDataTextField = () => {
     if (this.state.count < 7) {
@@ -379,9 +460,59 @@ export default class Counter extends React.Component {
             label="Enter Today's Data"
             keyboardType="number-pad"
             onSubmitEditing={this.onSubmit}
+            formatText={this.formatText}
             // title="Be Careful while entering the data, it can NOT be changed."
             ref={this.fieldRef}
           />
+        </View>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  renderShowCompleteDataGraphBtn = () => {
+    if (this.state.fullData.length > 1) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignContent: "center",
+            marginRight: screenWidth / 25
+          }}
+        >
+          <TouchableOpacity
+            style={{ margin: 10 }}
+            onPress={() => {
+              var completeDataInOneArray = getCompleteDataInOneArray(
+                this.state.fullData
+              );
+              this.setState({ completeDataInOneArray: completeDataInOneArray });
+              console.log(
+                completeDataInOneArray,
+                "this is the complete data array"
+              );
+              if (this.state.completeDataGraphVisible) {
+                this.setState({
+                  completeDataGraphVisible: !this.state
+                    .completeDataGraphVisible,
+                  completeDataShowBtnText: "Show a Graph For Complete Data"
+                });
+              } else {
+                this.setState({
+                  completeDataGraphVisible: !this.state
+                    .completeDataGraphVisible,
+                  completeDataShowBtnText: "Hide The Graph"
+                });
+              }
+            }}
+          >
+            <Text style={{ fontSize: 14, color: "#3d98ff" }}>
+              {this.state.completeDataShowBtnText}
+            </Text>
+          </TouchableOpacity>
         </View>
       );
     } else {
@@ -393,14 +524,27 @@ export default class Counter extends React.Component {
     if (this.state.currentWeekData.length > 0) {
       return (
         <View>
-          <Button
-            title="Edit The Most Recent Data"
-            titleStyle={{ fontSize: 13 }}
-            type="clear"
-            onPress={() => {
-              this.setState({ dialogVisible: true });
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignContent: "center",
+              marginRight: screenWidth / 25
             }}
-          />
+          >
+            <TouchableOpacity
+              style={{ margin: 10 }}
+              onPress={() => {
+                this.setState({ dialogVisible: true });
+              }}
+            >
+              <Text style={{ fontSize: 14, color: "#3d98ff" }}>
+                Edit The Most Recent Data
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           <Dialog.Container visible={this.state.dialogVisible}>
             <Dialog.Title>Edit Data</Dialog.Title>
             <Dialog.Description>
@@ -418,8 +562,18 @@ export default class Counter extends React.Component {
               onChangeText={text => this.setState({ newData: text })}
               value={this.state.newData}
             ></Dialog.Input>
-            <Dialog.Button label="Cancel" onPress={this.toggleDilog} />
-            <Dialog.Button label="Submit" onPress={this.editMostRecentData} />
+            <Dialog.Button
+              label="Cancel"
+              onPress={this.toggleDilog}
+              color="gray"
+              bold={true}
+            />
+            <Dialog.Button
+              label="Submit"
+              onPress={this.editMostRecentData}
+              color="#3d98ff"
+              bold={true}
+            />
           </Dialog.Container>
         </View>
       );
@@ -436,14 +590,16 @@ export default class Counter extends React.Component {
             flex: 1,
             flexDirection: "row",
             justifyContent: "space-between",
-            margin: screenWidth / 14
+            margin: screenWidth / 14,
+            marginTop: screenWidth / 25,
+            marginBottom: screenWidth / 25
           }}
         >
           <Button
             title="Delete Data"
             titleStyle={{ fontSize: 14 }}
             buttonStyle={{
-              backgroundColor: "green",
+              backgroundColor: "red",
               minWidth: 100,
               maxWidth: 100
             }}
@@ -487,7 +643,7 @@ export default class Counter extends React.Component {
             title="Add Data"
             titleStyle={{ fontSize: 14 }}
             buttonStyle={{
-              backgroundColor: "red",
+              backgroundColor: "green",
               minWidth: 100,
               maxWidth: 100
             }}
@@ -502,14 +658,16 @@ export default class Counter extends React.Component {
 
   // saveData funtion saves the data and renders a card after completion of 7 inputs
   saveData = async () => {
-    this.setState({ weekCount: this.state.weekCount + 1 });
-    this.setState({ weekCount: this.state.weekCount });
+    if (1 == 1) {
+      this.setState({ weekCount: this.state.weekCount + 1 });
+      this.setState({ weekCount: this.state.weekCount });
+    }
     var data = this.state.currentWeekData;
     console.log(this.state.currentWeekData, "the current week data");
     var dateArray = getDate(this.state.currentWeekData);
     var dayArray = getDay1(this.state.currentWeekData);
     var fullData = {
-      id: this.state.weekCount,
+      id: this.state.weekCount + 1,
       dateArray: dateArray,
       dayArray: dayArray,
       data: this.state.dataArray
@@ -517,7 +675,13 @@ export default class Counter extends React.Component {
 
     var newFUllData = this.state.fullData.concat(fullData);
     this.setState({ fullData: newFUllData });
-    console.log(this.state.fullData);
+    if (1 == 1) {
+      console.log(
+        "THE COMPLETE DATA STARTS HERE",
+        this.state.fullData,
+        "THE COMPLETE DATA ENDS"
+      );
+    }
 
     var dataToBeSaved = JSON.stringify(newFUllData);
     try {
@@ -589,7 +753,8 @@ export default class Counter extends React.Component {
         console.log("Error while saving current week data");
       }
     } else {
-      return null;
+      alert("Enter a valid data.");
+      // return null;
     }
   };
 }
@@ -646,7 +811,7 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     // fontFamily: 'serif',
-    fontSize: 35,
+    fontSize: 30,
     color: "white",
     fontWeight: "bold",
     // marginRight: 80,
