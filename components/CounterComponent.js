@@ -86,6 +86,14 @@ function getCompleteDataInOneArray(arr) {
   return completeDataArray;
 }
 
+function totalDataCounter(arr) {
+  sum = 0;
+  for (i = 0; i < arr.length; i++) {
+    sum = sum + arr[i];
+  }
+  return sum;
+}
+
 // class starts here
 
 export default class Counter extends React.Component {
@@ -162,7 +170,8 @@ export default class Counter extends React.Component {
           this.setState({ fullData: retrivedObj1 });
           var weekCount = retrivedObj1[retrivedObj1.length - 1].id;
           this.setState({
-            weekCount: weekCount + Math.random(100) + Math.random(100)
+            weekCount: weekCount + Math.random(100) + Math.random(100),
+            completeDataInOneArray: getCompleteDataInOneArray(retrivedObj1)
           });
           console.log(
             "no error in retriving FullData from key :",
@@ -362,6 +371,7 @@ export default class Counter extends React.Component {
       <Text></Text>
       <Text style={styles.date}>{date}</Text>
       <Text></Text>
+      <this.renderToalDataCount />
       <this.renderTodaysDataTextField />
       <Text></Text>
       <this.renderCurrentWeekData />
@@ -375,6 +385,91 @@ export default class Counter extends React.Component {
       <this.renderShowCompleteDataGraphBtn />
     </View>
   );
+
+  renderToalDataCount = () => {
+    if (
+      this.state.currentWeekData.length == 0 &&
+      this.state.fullData.length == 0
+    ) {
+      return null;
+    } else {
+      if (
+        this.state.fullData.length == 0 &&
+        this.state.currentWeekData.length != 0
+      ) {
+        return (
+          <View
+            style={{
+              backgroundColor: "white",
+              borderRadius: 20,
+              padding: 15,
+              marginLeft: screenWidth / 25,
+              marginRight: screenWidth / 25
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignContent: "center"
+              }}
+            >
+              <Text style={{ fontSize: 13 }}>Total Count:</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignContent: "center"
+              }}
+            >
+              <Text style={{ fontSize: 30, color: "#00704a" }}>
+                {totalDataCounter(
+                  getCompleteDataInOneArray(this.state.currentWeekData)
+                )}
+              </Text>
+            </View>
+          </View>
+        );
+      } else {
+        return (
+          <View
+            style={{
+              backgroundColor: "white",
+              borderRadius: 20,
+              padding: 15,
+              marginLeft: screenWidth / 25,
+              marginRight: screenWidth / 25
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignContent: "center"
+              }}
+            >
+              <Text style={{ fontSize: 13 }}>Total Count:</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignContent: "center"
+              }}
+            >
+              <Text style={{ fontSize: 30, color: "#00704a" }}>
+                {totalDataCounter(this.state.completeDataInOneArray) +
+                  totalDataCounter(
+                    getCompleteDataInOneArray(this.state.currentWeekData)
+                  )}
+              </Text>
+            </View>
+          </View>
+        );
+      }
+    }
+  };
 
   renderCurrentWeekData = () => {
     if (this.state.currentWeekData.length > 0) {
@@ -658,14 +753,11 @@ export default class Counter extends React.Component {
 
   // saveData funtion saves the data and renders a card after completion of 7 inputs
   saveData = async () => {
-    if (1 == 1) {
-      this.setState({ weekCount: this.state.weekCount + 1 });
-      this.setState({ weekCount: this.state.weekCount });
-    }
-    var data = this.state.currentWeekData;
+    this.setState({ weekCount: this.state.weekCount + 1 });
     console.log(this.state.currentWeekData, "the current week data");
-    var dateArray = getDate(this.state.currentWeekData);
-    var dayArray = getDay1(this.state.currentWeekData);
+    var currentWeekData = this.state.currentWeekData;
+    var dateArray = getDate(currentWeekData);
+    var dayArray = getDay1(currentWeekData);
     var fullData = {
       id: this.state.weekCount + 1,
       dateArray: dateArray,
@@ -674,6 +766,7 @@ export default class Counter extends React.Component {
     };
 
     var newFUllData = this.state.fullData.concat(fullData);
+    this.setState({ currentWeekData: [] });
     this.setState({ fullData: newFUllData });
     if (1 == 1) {
       console.log(
@@ -681,6 +774,9 @@ export default class Counter extends React.Component {
         this.state.fullData,
         "THE COMPLETE DATA ENDS"
       );
+      this.setState({
+        completeDataInOneArray: getCompleteDataInOneArray(newFUllData)
+      });
     }
 
     var dataToBeSaved = JSON.stringify(newFUllData);
@@ -692,8 +788,7 @@ export default class Counter extends React.Component {
       console.log("Error while saving Fulldata");
     }
 
-    this.setState({ dataArray: [] });
-    this.setState({ currentWeekData: [], count: 0 });
+    this.setState({ dataArray: [], count: 0 });
     if (1 === 1) {
       var arr = [];
       var dataToBeSaved = JSON.stringify(arr);
@@ -753,8 +848,7 @@ export default class Counter extends React.Component {
         console.log("Error while saving current week data");
       }
     } else {
-      alert("Enter a valid data.");
-      // return null;
+      return null;
     }
   };
 }
