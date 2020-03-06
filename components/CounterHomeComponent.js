@@ -480,6 +480,7 @@ export default class CounterHome extends React.Component {
             title="Pressing the enter key on the keyboard will create this counter."
             onSubmitEditing={this.onSubmit}
             ref={this.fieldRef}
+            autoFocus={true}
           />
         </View>
       );

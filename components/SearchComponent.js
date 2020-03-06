@@ -244,6 +244,7 @@ class Search extends React.Component {
           keyboardType="default"
           onSubmitEditing={this.onSubmit}
           ref={this.fieldRef}
+          autoFocus={true}
         />
       );
     } else {
